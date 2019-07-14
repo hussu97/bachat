@@ -1,0 +1,9 @@
+Card Type*
+Image*
+Logo
+Company Name*
+Offer Description*
+Validity
+T&C
+Location(s)
+Type
