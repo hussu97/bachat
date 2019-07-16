@@ -27,6 +27,7 @@ dependencies:
   dio: 2.1.0
   recase: 2.0.1
   auto_size_text: 2.0.2
+  transparent_image: 1.0.0
 
 dev_dependencies:
   flutter_test:

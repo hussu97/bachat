@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import './styles.dart';
 
@@ -13,10 +14,11 @@ class RewardListItemTop extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: _widgetHeight,
-      decoration: BoxDecoration(
-        image: DecorationImage(
+      child: ClipRRect(
+        child: FadeInImage.memoryNetwork(
+          image: _backgroundImageUrl,
+          placeholder: kTransparentImage,
           fit: BoxFit.fitWidth,
-          image: NetworkImage(_backgroundImageUrl),
         ),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
