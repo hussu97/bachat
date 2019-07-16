@@ -1,16 +1,22 @@
+import 'package:bachat/models/reward.dart';
+import 'package:bachat/reward_list_item_bottom.dart';
+import 'package:bachat/reward_list_item_top.dart';
 import 'package:flutter/material.dart';
+import 'package:recase/recase.dart';
 
-import 'package:demo_project_2/reward_details.dart';
+import './reward_details.dart';
 import './styles.dart';
 
+
 class RewardListItem extends StatelessWidget {
-  final List<Map<String,Object>> rewards = [
-    {'url': 'https://picsum.photos/250?image=9','title': 'Mcdonald\'s','distance': '1.2km','offer': 'Buy 1 get 1 free'}
-  ];
-  final String url = 'https://picsum.photos/250?image=9';
-  final String title = 'McDonald\'s';
-  final String subtitle = '1.2km';
-  final String offer = 'Buy 1 get 1 free';
+
+  final Reward reward;
+
+  RewardListItem(this.reward){
+    // formatting the cases of certain fields
+    this.reward.companyName = new ReCase(this.reward.companyName).titleCase;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +27,7 @@ class RewardListItem extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RewardDetails(rewards[0]['title']),
+                  builder: (context) => RewardDetails(reward.companyName),
                 ),
               );
             },
@@ -29,64 +35,14 @@ class RewardListItem extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 150.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fitWidth,
-                          image:
-                              NetworkImage(rewards[0]['url']),
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 150.0,
-                      child: Align(
-                        child: Row(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 5.0, left: 10.0),
-                              child: Text(
-                                rewards[0]['title'],
-                                style: Styles.textCardTitle,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsets.only(bottom: 5.0, right: 10.0),
-                              child: Text(
-                                rewards[0]['distance'],
-                                style: Styles.textCardSubtitle,
-                              ),
-                            ),
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
-                        alignment: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    rewards[0]['offer'],
-                    style: Styles.textCardOffer,
-                  ),
-                ),
+                RewardListItemTop(reward.backgroundImage, reward.companyName),
+                RewardListItemBottom(reward.offer, reward.logo, reward.rewardOriginLogo)
               ],
             ),
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          elevation: 4.0,
         ),
       ),
       padding: EdgeInsets.all(5.0),
