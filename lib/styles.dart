@@ -9,7 +9,7 @@ class Styles {
   static final Color _textColorDefault = _hexToColor('ffffff');
   static final Color _textColorSecondary = _hexToColor('7f8185');
   static final Color _textColorDefaultInverse = _hexToColor('000000');
-  static final Color _textColorContactNumber = _hexToColor('0b9620');
+  static final Color textColorGreen = _hexToColor('0b9620');
   static final String _fontNameDefault = 'Roboto';
   static final FontWeight _fontWeightDefault = FontWeight.w500;
   static final FontWeight _fontWeightLight = FontWeight.w300;
@@ -52,7 +52,7 @@ class Styles {
   static final textDetailsPageContact = TextStyle(
     fontFamily: _fontNameDefault,
     fontSize: _textSizeXSmall,
-    color: _textColorContactNumber,
+    color: textColorGreen,
     fontWeight: _fontWeightLight,
     decoration: TextDecoration.underline
   );

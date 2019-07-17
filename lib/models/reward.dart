@@ -7,12 +7,12 @@ class Reward {
   final String logo; //
   final String workingHours; //
   String cost; //
-  final String termsAndConditions;
-  final String location;
-  final String expiryDate;
+  final String termsAndConditions; //
+  final String location; //
+  final String expiryDate; //
   final String link; //
   String contact; //
-  final String rating;
+  final String rating; //
   final String cuisine; //
   final String offerDescription; //
   final String offerType;

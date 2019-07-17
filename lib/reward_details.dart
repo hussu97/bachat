@@ -1,8 +1,10 @@
+import 'package:bachat/components/column_with_heading_and_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import './models/reward.dart';
 import './components/reward_origin_logo.dart';
@@ -12,6 +14,7 @@ import './styles.dart';
 
 class RewardDetails extends StatelessWidget {
   final Reward _reward;
+  final double _padding = 10.0;
 
   RewardDetails(this._reward) {
     if (this._reward.cost != null)
@@ -64,13 +67,13 @@ class RewardDetails extends StatelessWidget {
   Widget _buildContactRow(String contact) {
     if (contact != null) {
       return Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(_padding),
         child: Row(
           children: <Widget>[
             IconBuilder(FontAwesomeIcons.phone),
             Flexible(
               child: Padding(
-                padding: EdgeInsets.only(right: 10.0, left: 10.0),
+                padding: EdgeInsets.only(right: _padding, left: _padding),
                 child: RichText(
                   text: new TextSpan(
                     children: _buildContactNumber(contact),
@@ -89,7 +92,7 @@ class RewardDetails extends StatelessWidget {
 
   Widget _buildRewardOriginRow(rewardOrigin, rewardOriginLogo) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(_padding),
       child: Row(
         children: <Widget>[
           IconBuilder(FontAwesomeIcons.handshake),
@@ -98,7 +101,7 @@ class RewardDetails extends StatelessWidget {
             style: Styles.textDetailsPageInfo,
           ),
           Padding(
-            padding: EdgeInsets.only(right: 10.0),
+            padding: EdgeInsets.only(right: _padding),
             child: RewardOriginLogo(rewardOriginLogo),
           ),
         ],
@@ -110,7 +113,7 @@ class RewardDetails extends StatelessWidget {
   Widget _buildLinkRow(link) {
     if (link != null) {
       return Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(_padding),
         child: Center(
           child: RaisedButton(
             child: Text(
@@ -133,26 +136,15 @@ class RewardDetails extends StatelessWidget {
     }
   }
 
-  Widget _buildOfferDescriptionRow(String offerDescription) {
-    if (offerDescription != null) {
-      return Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'Offer Description',
-              textAlign: TextAlign.center,
-              style: Styles.textDetailsPageHeading,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-              child: Text(
-                offerDescription,
-              ),
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-        ),
+  Widget _buildRatingRow(rating) {
+    if (rating != null) {
+      rating = double.parse(rating);
+      return FlutterRatingBarIndicator(
+        rating: rating,
+        itemCount: 5,
+        itemSize: 20.0,
+        emptyColor: Styles.textColorGreen.withAlpha(50),
+        fillColor: Styles.textColorGreen,
       );
     } else {
       return SizedBox.shrink();
@@ -162,47 +154,68 @@ class RewardDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_reward.companyName),
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            height: 250.0,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: FadeInImage.memoryNetwork(
-                    image: _reward.backgroundImage,
-                    placeholder: kTransparentImage,
-                    fit: BoxFit.fitWidth,
-                  ),
+        appBar: AppBar(
+          title: Text(_reward.companyName),
+        ),
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewPortConstraints.maxHeight,
                 ),
-                Container(
-                  color: Color.fromARGB(0x59, 0, 0, 0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 250.0,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: FadeInImage.memoryNetwork(
+                              image: _reward.backgroundImage,
+                              placeholder: kTransparentImage,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          Container(
+                            color: Color.fromARGB(0x59, 0, 0, 0),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              _reward.offer,
+                              style: Styles.textDetailsPageTitle,
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    _buildRewardOriginRow(
+                      _reward.rewardOrigin,
+                      _reward.rewardOriginLogo,
+                    ),
+                    ColumnWithHeadingAndText('Offer Description', _reward.offerDescription),
+                    _buildRatingRow(_reward.rating),
+                    TwoItemRowWithIcon(
+                        _reward.cuisine, FontAwesomeIcons.utensils),
+                    TwoItemRowWithIcon(
+                        _reward.workingHours, FontAwesomeIcons.clock),
+                    TwoItemRowWithIcon(
+                        _reward.location, FontAwesomeIcons.locationArrow),
+                    TwoItemRowWithIcon(
+                        _reward.cost, FontAwesomeIcons.moneyBill),
+                    TwoItemRowWithIcon(
+                        _reward.expiryDate, FontAwesomeIcons.history),
+                    _buildContactRow(_reward.contact),
+                    ColumnWithHeadingAndText('Terms & Conditions', _reward.termsAndConditions),
+                    _buildLinkRow(_reward.link)
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    _reward.offer,
-                    style: Styles.textDetailsPageTitle,
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
-            ),
-          ),
-          _buildRewardOriginRow(_reward.rewardOrigin, _reward.rewardOriginLogo),
-          _buildOfferDescriptionRow(_reward.offerDescription),
-          TwoItemRowWithIcon(_reward.cuisine, FontAwesomeIcons.utensils),
-          TwoItemRowWithIcon(_reward.workingHours, FontAwesomeIcons.clock),
-          TwoItemRowWithIcon(_reward.location, FontAwesomeIcons.locationArrow),
-          TwoItemRowWithIcon(_reward.cost, FontAwesomeIcons.moneyBill),
-          _buildContactRow(_reward.contact),
-          _buildLinkRow(_reward.link)
-        ],
-      ),
-    );
+              ),
+            );
+          },
+        ));
   }
 }
