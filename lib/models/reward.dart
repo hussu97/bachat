@@ -6,6 +6,16 @@ class Reward {
   final String offer;
   final String logo;
   final String workingHours;
+  String cost;
+  final String termsAndConditions;
+  final String location;
+  final String expiryDate;
+  final String link;
+  String contact;
+  final String rating;
+  final String cuisine;
+  final String offerDescription;
+  final String offerType;
 
   Reward({
     this.companyName,
@@ -14,7 +24,17 @@ class Reward {
     this.rewardOriginLogo,
     this.offer,
     this.logo,
-    this.workingHours
+    this.workingHours,
+    this.contact,
+    this.cost,
+    this.cuisine,
+    this.expiryDate,
+    this.link,
+    this.location,
+    this.offerDescription,
+    this.offerType,
+    this.rating,
+    this.termsAndConditions
   });
 
   factory Reward.fromJson(Map<String, dynamic> json) {
@@ -25,7 +45,17 @@ class Reward {
       rewardOriginLogo: json['reward_origin_logo'],
       offer: json['offer'],
       logo: json['logo'],
-      workingHours: json['working_hours']
+      workingHours: json['working_hours'],
+      contact: json['contact'],
+      cost: json['cost'],
+      cuisine: json['cuisine'],
+      expiryDate: json['expiry_date'],
+      link: json['link'],
+      location: json['location'],
+      offerDescription: json['offer_description'],
+      offerType: json['offer_type'],
+      rating: json['rating'],
+      termsAndConditions: json['terms_and_conditions']
     );
   }
 }

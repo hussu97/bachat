@@ -4,8 +4,7 @@ import 'package:bachat/reward_list_item_top.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 
-import './reward_details.dart';
-import './styles.dart';
+import './components/reward_details/reward_details.dart';
 
 
 class RewardListItem extends StatelessWidget {
@@ -27,7 +26,7 @@ class RewardListItem extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RewardDetails(reward.companyName),
+                  builder: (context) => RewardDetails(reward),
                 ),
               );
             },

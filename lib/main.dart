@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './search_rewards.dart';
+import './rewards_search.dart';
 import './rewards_list.dart';
 
 void main() => runApp(MyApp());

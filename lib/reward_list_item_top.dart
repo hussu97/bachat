@@ -28,10 +28,8 @@ class RewardListItemTop extends StatelessWidget {
     );
   }
 
-  Widget _buildCompanyNameText(context) {
+  Widget _buildCompanyNameText() {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: _widgetHeight,
       child: Align(
         child: Padding(
           padding: EdgeInsets.only(bottom: 5.0, left: 10.0),
@@ -47,11 +45,24 @@ class RewardListItemTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _buildBackgroundImage(context),
-        _buildCompanyNameText(context),
-      ],
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: _widgetHeight,
+      child: Stack(
+        children: <Widget>[
+          _buildBackgroundImage(context),
+          Container(
+            decoration: new BoxDecoration(
+              color: Color.fromARGB(0x26, 0, 0, 0),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+              ),
+            ),
+          ),
+          _buildCompanyNameText(),
+        ],
+      ),
     );
   }
 }

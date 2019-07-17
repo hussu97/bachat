@@ -4,9 +4,11 @@ class Styles {
   static const _textSizeLarge = 25.0;
   static const textSizeDefault = 18.0;
   static const _textSizeSmall = 16.0;
+  static const _textSizeXSmall = 14.0;
   static final Color _textColorStrong = Colors.blue;
   static final Color _textColorDefault = _hexToColor('ffffff');
   static final Color _textColorDefaultInverse = _hexToColor('000000');
+  static final Color _textColorContactNumber = _hexToColor('0b9620');
   static final String _fontNameDefault = 'Roboto';
   static final FontWeight _fontWeightDefault = FontWeight.w500;
   static final FontWeight _fontWeightLight = FontWeight.w300;
@@ -28,11 +30,24 @@ class Styles {
     color: _textColorStrong,
     fontWeight: _fontWeightDefault,
   );
-  static final textDefault = TextStyle(
+  static final textDetailsPageTitle = TextStyle(
     fontFamily: _fontNameDefault,
-    fontSize: textSizeDefault,
+    fontSize: _textSizeLarge,
     color: _textColorDefault,
     fontWeight: _fontWeightDefault,
+  );
+  static final textDetailsPageInfo = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeXSmall,
+    color: _textColorDefaultInverse,
+    fontWeight: _fontWeightLight,
+  );
+  static final textDetailsPageContact = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeXSmall,
+    color: _textColorContactNumber,
+    fontWeight: _fontWeightLight,
+    decoration: TextDecoration.underline
   );
 
   static Color _hexToColor(String code) {
