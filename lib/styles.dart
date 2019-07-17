@@ -54,7 +54,12 @@ class Styles {
     fontSize: _textSizeXSmall,
     color: textColorGreen,
     fontWeight: _fontWeightLight,
-    decoration: TextDecoration.underline
+    decoration: TextDecoration.underline,
+  );
+  static final textTabBar = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeSmall,
+    fontWeight: _fontWeightLight,
   );
 
   static Color _hexToColor(String code) {

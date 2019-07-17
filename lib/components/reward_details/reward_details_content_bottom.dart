@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -9,72 +8,14 @@ import '../two_item_row.dart';
 import '../../styles.dart';
 import '../../models/reward.dart';
 import '../icon_builder.dart';
+import '../reward_origin_logo.dart';
+import './contact_number_row.dart';
 
 class RewardDetailsContentBottom extends StatelessWidget {
   final Reward _reward;
   final double _padding = 10.0;
 
   RewardDetailsContentBottom(this._reward);
-
-List<TextSpan> _buildContactNumber(String contact) {
-    List<String> contactsList = contact.split(',');
-    contactsList = contact.split('|');
-    contactsList = contact.split('/');
-    List<TextSpan> contacts = new List<TextSpan>();
-    print(contactsList);
-    for (var i = 0; i < contactsList.length; i++) {
-      String tmp = contactsList[i];
-      contacts.add(
-        new TextSpan(
-          text: tmp,
-          style: Styles.textDetailsPageContact,
-          recognizer: new TapGestureRecognizer()
-            ..onTap = () async {
-              if (await canLaunch('tel:$tmp')) {
-                await launch('tel:$tmp');
-              } else {
-                throw 'Could not launch $tmp';
-              }
-            },
-        ),
-      );
-      if (i != contactsList.length - 1) {
-        contacts.add(
-          new TextSpan(
-            text: ',',
-            style: Styles.textDetailsPageInfo,
-          ),
-        );
-      }
-    }
-    return contacts;
-  }
-
-  Widget _buildContactRow(String contact) {
-    if (contact != null) {
-      return Padding(
-        padding: EdgeInsets.all(_padding),
-        child: Row(
-          children: <Widget>[
-            IconBuilder(FontAwesomeIcons.phone),
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.only(right: _padding, left: _padding),
-                child: RichText(
-                  text: new TextSpan(
-                    children: _buildContactNumber(contact),
-                  ),
-                ),
-              ),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-      );
-    } else {
-      return new SizedBox.shrink();
-    }
-  }
 
   Widget _buildRewardOriginRow(rewardOrigin, rewardOriginLogo) {
     return Padding(
@@ -136,14 +77,11 @@ List<TextSpan> _buildContactNumber(String contact) {
       return SizedBox.shrink();
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-      _buildRewardOriginRow(
-        _reward.rewardOrigin,
-        _reward.rewardOriginLogo,
-      ),
+    return Column(children: [
+      _buildRewardOriginRow(_reward.rewardOrigin, _reward.rewardOriginLogo),
       ColumnWithHeadingAndText('Offer Description', _reward.offerDescription),
       _buildRatingRow(_reward.rating),
       TwoItemRowWithIcon(_reward.cuisine, FontAwesomeIcons.utensils),
@@ -151,11 +89,10 @@ List<TextSpan> _buildContactNumber(String contact) {
       TwoItemRowWithIcon(_reward.location, FontAwesomeIcons.locationArrow),
       TwoItemRowWithIcon(_reward.cost, FontAwesomeIcons.moneyBill),
       TwoItemRowWithIcon(_reward.expiryDate, FontAwesomeIcons.history),
-      _buildContactRow(_reward.contact),
+      ContactNumberRow(_reward.contact, _padding),
       ColumnWithHeadingAndText(
           'Terms & Conditions', _reward.termsAndConditions),
       _buildLinkRow(_reward.link),
-      ]
-    );
+    ]);
   }
 }

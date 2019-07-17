@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
-class DataSearch extends SearchDelegate<String> {
-  final list = ['hello', 'this', 'is', 'me', 'hussain'];
+import './rewards_list.dart';
 
-  final cachedList = ['me', 'hussain', 'qsqqs', 'sss'];
+class DataSearch extends SearchDelegate<String> {
+  List<String> _list;
+  List<String> _cachedList;
+
+  DataSearch(List<String> list) {
+    this._list = list.toSet().toList();
+    this._list.sort();
+    this._cachedList = this._list.sublist(0, 10);
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -32,31 +39,22 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Container(
-        height: 100.0,
-        width: 100.0,
-        child: Card(
-          color: Colors.red,
-          child: Center(
-            child: Text(query),
-          ),
-        ),
-      ),
-    );
+    close(context, query);
+    return SizedBox.shrink(); 
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
-        ? cachedList
-        : list
+        ? _cachedList
+        : _list
             .where((p) => p.toLowerCase().startsWith(query.toLowerCase()))
             .toList();
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: () {
+          query = suggestionList[index];
           showResults(context);
         },
         leading: Icon(Icons.location_city),
