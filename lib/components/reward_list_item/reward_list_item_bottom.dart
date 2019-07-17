@@ -1,7 +1,7 @@
-import 'package:bachat/reward_origin_logo.dart';
 import 'package:flutter/material.dart';
 
-import './styles.dart';
+import '../../styles.dart';
+import '../reward_origin_logo.dart';
 
 class RewardListItemBottom extends StatelessWidget {
   final String _offer;

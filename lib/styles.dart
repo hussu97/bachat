@@ -7,6 +7,7 @@ class Styles {
   static const _textSizeXSmall = 14.0;
   static final Color _textColorStrong = Colors.blue;
   static final Color _textColorDefault = _hexToColor('ffffff');
+  static final Color _textColorSecondary = _hexToColor('7f8185');
   static final Color _textColorDefaultInverse = _hexToColor('000000');
   static final Color _textColorContactNumber = _hexToColor('0b9620');
   static final String _fontNameDefault = 'Roboto';
@@ -41,6 +42,12 @@ class Styles {
     fontSize: _textSizeXSmall,
     color: _textColorDefaultInverse,
     fontWeight: _fontWeightLight,
+  );
+  static final textDetailsPageHeading = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeXSmall,
+    color: _textColorSecondary,
+    fontWeight: _fontWeightDefault,
   );
   static final textDetailsPageContact = TextStyle(
     fontFamily: _fontNameDefault,

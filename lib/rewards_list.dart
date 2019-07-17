@@ -1,8 +1,8 @@
-import 'package:bachat/models/reward.dart';
-import 'package:bachat/reward_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
+import './models/reward.dart';
+import './components/reward_list_item/reward_list_item.dart';
 class RewardsList extends StatefulWidget {
   final String api;
   final String baseUrl;

@@ -1,10 +1,10 @@
 import 'package:bachat/models/reward.dart';
-import 'package:bachat/reward_list_item_bottom.dart';
-import 'package:bachat/reward_list_item_top.dart';
+import './reward_list_item_bottom.dart';
+import './reward_list_item_top.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 
-import './components/reward_details/reward_details.dart';
+import '../../reward_details.dart';
 
 
 class RewardListItem extends StatelessWidget {

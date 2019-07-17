@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import './styles.dart';
+import '../../styles.dart';
 
 class RewardListItemTop extends StatelessWidget {
   final String _backgroundImageUrl;

@@ -1,20 +1,20 @@
 class Reward {
-  String companyName;
-  final String backgroundImage;
-  final String rewardOrigin;
-  final String rewardOriginLogo;
-  final String offer;
-  final String logo;
-  final String workingHours;
-  String cost;
+  String companyName; //
+  final String backgroundImage; //
+  final String rewardOrigin; //
+  final String rewardOriginLogo; //
+  final String offer; //
+  final String logo; //
+  final String workingHours; //
+  String cost; //
   final String termsAndConditions;
   final String location;
   final String expiryDate;
-  final String link;
-  String contact;
+  final String link; //
+  String contact; //
   final String rating;
-  final String cuisine;
-  final String offerDescription;
+  final String cuisine; //
+  final String offerDescription; //
   final String offerType;
 
   Reward({

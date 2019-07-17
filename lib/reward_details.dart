@@ -4,16 +4,20 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../models/reward.dart';
-import '../reward_origin_logo.dart';
-import '../../styles.dart';
+import './models/reward.dart';
+import './components/reward_origin_logo.dart';
+import './components/two_item_row.dart';
+import './components/icon_builder.dart';
+import './styles.dart';
 
 class RewardDetails extends StatelessWidget {
   final Reward _reward;
 
   RewardDetails(this._reward) {
-    this._reward.cost = this._reward.cost.replaceAll("\n", " ");
-    this._reward.contact = _contactNumberFormatter(this._reward.contact);
+    if (this._reward.cost != null)
+      this._reward.cost = this._reward.cost.replaceAll("\n", " ");
+    if (this._reward.contact != null)
+      this._reward.contact = _contactNumberFormatter(this._reward.contact);
   }
 
   _contactNumberFormatter(String contact) {
@@ -23,41 +27,10 @@ class RewardDetails extends StatelessWidget {
     return contact;
   }
 
-  Widget _buildIcon(iconData) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.0),
-      child: Icon(
-        iconData,
-        color: Color.fromARGB(0xB3, 0, 0, 0),
-      ),
-    );
-  }
-
-  Widget _buildCostRow(cost) {
-    if (cost != null) {
-      return Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          children: <Widget>[
-            _buildIcon(FontAwesomeIcons.moneyBill),
-            Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: Text(
-                cost,
-                style: Styles.textDetailsPageInfo,
-              ),
-            )
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-      );
-    } else {
-      return new SizedBox.shrink();
-    }
-  }
-
   List<TextSpan> _buildContactNumber(String contact) {
     List<String> contactsList = contact.split(',');
+    contactsList = contact.split('|');
+    contactsList = contact.split('/');
     List<TextSpan> contacts = new List<TextSpan>();
     print(contactsList);
     for (var i = 0; i < contactsList.length; i++) {
@@ -79,7 +52,7 @@ class RewardDetails extends StatelessWidget {
       if (i != contactsList.length - 1) {
         contacts.add(
           new TextSpan(
-            text: ' , ',
+            text: ',',
             style: Styles.textDetailsPageInfo,
           ),
         );
@@ -94,12 +67,14 @@ class RewardDetails extends StatelessWidget {
         padding: EdgeInsets.all(10.0),
         child: Row(
           children: <Widget>[
-            _buildIcon(FontAwesomeIcons.phone),
-            Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: RichText(
-                text: new TextSpan(
-                  children: _buildContactNumber(contact),
+            IconBuilder(FontAwesomeIcons.phone),
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.only(right: 10.0, left: 10.0),
+                child: RichText(
+                  text: new TextSpan(
+                    children: _buildContactNumber(contact),
+                  ),
                 ),
               ),
             ),
@@ -117,7 +92,7 @@ class RewardDetails extends StatelessWidget {
       padding: EdgeInsets.all(10.0),
       child: Row(
         children: <Widget>[
-          _buildIcon(FontAwesomeIcons.handshake),
+          IconBuilder(FontAwesomeIcons.handshake),
           Text(
             rewardOrigin + ' customers',
             style: Styles.textDetailsPageInfo,
@@ -151,6 +126,32 @@ class RewardDetails extends StatelessWidget {
               }
             },
           ),
+        ),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
+
+  Widget _buildOfferDescriptionRow(String offerDescription) {
+    if (offerDescription != null) {
+      return Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: <Widget>[
+            Text(
+              'Offer Description',
+              textAlign: TextAlign.center,
+              style: Styles.textDetailsPageHeading,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+              child: Text(
+                offerDescription,
+              ),
+            ),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.stretch,
         ),
       );
     } else {
@@ -193,7 +194,11 @@ class RewardDetails extends StatelessWidget {
             ),
           ),
           _buildRewardOriginRow(_reward.rewardOrigin, _reward.rewardOriginLogo),
-          _buildCostRow(_reward.cost),
+          _buildOfferDescriptionRow(_reward.offerDescription),
+          TwoItemRowWithIcon(_reward.cuisine, FontAwesomeIcons.utensils),
+          TwoItemRowWithIcon(_reward.workingHours, FontAwesomeIcons.clock),
+          TwoItemRowWithIcon(_reward.location, FontAwesomeIcons.locationArrow),
+          TwoItemRowWithIcon(_reward.cost, FontAwesomeIcons.moneyBill),
           _buildContactRow(_reward.contact),
           _buildLinkRow(_reward.link)
         ],
