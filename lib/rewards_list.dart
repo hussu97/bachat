@@ -26,9 +26,7 @@ class _RewardsListState extends State<RewardsList> {
         isLoading = true;
       });
     }
-    print(moreDataUrl);
     final response = await dio.get(moreDataUrl);
-    print(response);
     List tempList = new List();
     moreDataUrl = response.data['next'];
     for (int i = 0; i < response.data['data'].length; i++) {
@@ -47,7 +45,6 @@ class _RewardsListState extends State<RewardsList> {
   void initState() {
     dio.options.baseUrl = widget.baseUrl;
     moreDataUrl = widget.api;
-    print(moreDataUrl);
     this._getMoreData();
     super.initState();
     _scrollController.addListener(() {

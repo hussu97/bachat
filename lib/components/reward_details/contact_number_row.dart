@@ -17,7 +17,6 @@ class ContactNumberRow extends StatelessWidget {
     contactsList = contact.split('|');
     contactsList = contact.split('/');
     List<TextSpan> contacts = new List<TextSpan>();
-    print(contactsList);
     for (var i = 0; i < contactsList.length; i++) {
       String tmp = contactsList[i];
       contacts.add(
