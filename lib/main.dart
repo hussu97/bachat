@@ -48,7 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> _buildTabList() {
     List<Widget> res = new List<Widget>();
     tabs.forEach((tab) => res.add(Tab(child: Text(tab))));
-    print(res.length);
     return res;
   }
 

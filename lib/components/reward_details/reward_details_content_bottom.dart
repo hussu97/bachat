@@ -24,8 +24,8 @@ class RewardDetailsContentBottom extends StatelessWidget {
         children: <Widget>[
           IconBuilder(FontAwesomeIcons.handshake),
           Text(
-            rewardOrigin + ' customers',
-            style: Styles.textDetailsPageInfo,
+            '$rewardOrigin customers',
+            style: Styles.textDetailsPageSubtitle,
           ),
           Padding(
             padding: EdgeInsets.only(right: _padding),
@@ -37,8 +37,8 @@ class RewardDetailsContentBottom extends StatelessWidget {
     );
   }
 
-  Widget _buildLinkRow(link) {
-    if (link != null) {
+  Widget _buildLinkRow(String link) {
+    if (link != null && link.isNotEmpty) {
       return Padding(
         padding: EdgeInsets.all(_padding),
         child: Center(
@@ -63,8 +63,8 @@ class RewardDetailsContentBottom extends StatelessWidget {
     }
   }
 
-  Widget _buildRatingRow(rating) {
-    if (rating != null) {
+  Widget _buildRatingRow(String rating) {
+    if (rating != null && rating.isNotEmpty) {
       double ratingDouble = double.tryParse(rating);
       if (ratingDouble != null) {
         return FlutterRatingBarIndicator(

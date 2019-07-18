@@ -11,7 +11,7 @@ class TwoItemRowWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (text != null) {
+    if (text != null && text.isNotEmpty) {
       return Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(

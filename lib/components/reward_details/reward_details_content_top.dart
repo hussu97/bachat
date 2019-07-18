@@ -19,11 +19,11 @@ class RewardDetailsContentTop extends StatelessWidget {
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width,
-            alignment: Alignment(0.0, 0.0),
             child: FadeInImage.memoryNetwork(
               image: _backgroundImage,
               placeholder: kTransparentImage,
               fit: BoxFit.fitWidth,
+              alignment: Alignment(0.0, 0.0),
             ),
           ),
           Container(

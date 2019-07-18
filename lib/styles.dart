@@ -45,6 +45,12 @@ class Styles {
     color: textColorDefault,
     fontWeight: _fontWeightDefault,
   );
+  static final textDetailsPageSubtitle = TextStyle(
+    fontFamily: _fontNameText,
+    fontSize: _textSizeXSmall,
+    color: textColorDefaultInverse,
+    fontWeight: _fontWeightBold,
+  );
   static final textDetailsPageInfo = TextStyle(
     fontFamily: _fontNameText,
     fontSize: _textSizeXSmall,
