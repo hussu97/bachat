@@ -60,7 +60,7 @@ class DataSearch extends SearchDelegate<String> {
           query = suggestionList[index];
           showResults(context);
         },
-        leading: Icon(Icons.location_city),
+        leading: Icon(Icons.local_offer,),
         title: RichText(
           text: TextSpan(
             text: suggestionList[index].substring(0, query.length),
