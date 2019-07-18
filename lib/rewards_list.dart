@@ -79,6 +79,16 @@ class _RewardsListState extends State<RewardsList> {
       //+1 for progressbar
       itemCount: rewards.length + 1,
       itemBuilder: (BuildContext context, int index) {
+        if (index == rewards.length && moreDataUrl == ''){
+          return Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Text(
+              'How you doin? 😏',
+              style: Styles.textDetailsPageInfo,
+              textAlign: TextAlign.center,
+            ),
+          );
+        }
         if (index == rewards.length) {
           return _buildProgressIndicator();
         } else {

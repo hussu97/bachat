@@ -65,14 +65,21 @@ class RewardDetailsContentBottom extends StatelessWidget {
 
   Widget _buildRatingRow(rating) {
     if (rating != null) {
-      rating = double.parse(rating);
-      return FlutterRatingBarIndicator(
-        rating: rating,
-        itemCount: 5,
-        itemSize: 20.0,
-        emptyColor: Styles.textColorGreen.withAlpha(50),
-        fillColor: Styles.textColorGreen,
-      );
+      double ratingDouble = double.tryParse(rating);
+      if (ratingDouble != null) {
+        return FlutterRatingBarIndicator(
+          rating: ratingDouble,
+          itemCount: 5,
+          itemSize: 20.0,
+          emptyColor: Styles.textColorGreen.withAlpha(50),
+          fillColor: Styles.textColorGreen,
+        );
+      } else {
+        return Text(
+          'Rating : $rating',
+          style: Styles.textDetailsPageInfo,
+        );
+      }
     } else {
       return SizedBox.shrink();
     }

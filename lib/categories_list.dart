@@ -46,7 +46,7 @@ class _CategoriesListState extends State<CategoriesList> {
         String categoryCount = categories[index]['count'].toString();
         String title = '$categoryName ($categoryCount)';
         return new Card(
-          margin: EdgeInsets.only(top: 14.0, right: 5.0, left: 5.0),
+          margin: EdgeInsets.only(top: 12.0, right: 5.0, left: 5.0, bottom: 5.0),
           elevation: 4.0,
           child: ListTile(
             title: Text(
