@@ -45,9 +45,9 @@ class RewardDetailsContentBottom extends StatelessWidget {
           child: RaisedButton(
             child: Text(
               'Check out more',
-              style: TextStyle(color: Colors.white),
+              style: Styles.textButton,
             ),
-            color: Colors.lightBlueAccent,
+            color: Styles.textColorTertiary,
             onPressed: () async {
               if (await canLaunch('$link')) {
                 await launch('$link');

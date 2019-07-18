@@ -25,7 +25,7 @@ class _CategoriesListState extends State<CategoriesList> {
     for (int i = 0; i < response.data['data'].length; i++) {
       tempList.add(response.data['data'][i]);
     }
-    tempList.sort((a,b)=> a['offer_type'].compareTo(b['offer_type']));
+    tempList.sort((a, b) => a['offer_type'].compareTo(b['offer_type']));
     setState(() {
       categories.addAll(tempList);
     });
@@ -51,7 +51,7 @@ class _CategoriesListState extends State<CategoriesList> {
           child: ListTile(
             title: Text(
               new ReCase(title).sentenceCase,
-              style: Styles.textDetailsPageHeading,
+              style: Styles.textListItemTitle,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
@@ -61,7 +61,14 @@ class _CategoriesListState extends State<CategoriesList> {
                 MaterialPageRoute(
                   builder: (context) => Scaffold(
                     appBar: AppBar(
-                      title: Text(new ReCase(title).sentenceCase),
+                      iconTheme: IconThemeData(
+                        color: Styles.textColorDefaultInverse,
+                      ),
+                      backgroundColor: Styles.textColorDefault,
+                      title: Text(
+                        new ReCase(title).sentenceCase,
+                        style: Styles.textScreenTitle,
+                      ),
                     ),
                     body: RewardsList(
                       baseUrl: widget._baseUrl,
@@ -82,7 +89,7 @@ class _CategoriesListState extends State<CategoriesList> {
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0),
       child: _buildList(),
-      color: Color.fromARGB(33, 0, 0, 0),
+      color: Styles.textColorDefault,
     );
   }
 }

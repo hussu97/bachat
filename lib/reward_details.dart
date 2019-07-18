@@ -1,4 +1,5 @@
 import 'package:bachat/components/reward_details/reward_details_content.dart';
+import 'package:bachat/styles.dart';
 import 'package:flutter/material.dart';
 
 import './models/reward.dart';
@@ -25,7 +26,14 @@ class RewardDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_reward.companyName),
+        iconTheme: IconThemeData(
+          color: Styles.textColorDefaultInverse,
+        ),
+        backgroundColor: Styles.textColorDefault,
+        title: Text(
+          _reward.companyName,
+          style: Styles.textScreenTitle,
+        ),
       ),
       body: RewardDetailsContent(_reward),
     );

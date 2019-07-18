@@ -1,3 +1,4 @@
+import 'package:bachat/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -92,7 +93,7 @@ class _RewardsListState extends State<RewardsList> {
   Widget build(BuildContext context) {
     return Container(
       child: _buildList(),
-      color: Color.fromARGB(33, 0,0,0),
+      color: Styles.textColorDefault,
     );
   }
 }

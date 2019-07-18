@@ -55,7 +55,7 @@ class _ProgramsListState extends State<ProgramsList> {
             ),
             title: Text(
               title,
-              style: Styles.textDetailsPageHeading,
+              style: Styles.textListItemTitle,
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
@@ -65,7 +65,14 @@ class _ProgramsListState extends State<ProgramsList> {
                 MaterialPageRoute(
                   builder: (context) => Scaffold(
                     appBar: AppBar(
-                      title: Text(title),
+                      iconTheme: IconThemeData(
+                        color: Styles.textColorDefaultInverse,
+                      ),
+                      backgroundColor: Styles.textColorDefault,
+                      title: Text(
+                        title,
+                        style: Styles.textScreenTitle,
+                      ),
                     ),
                     body: RewardsList(
                       baseUrl: widget._baseUrl,
@@ -86,7 +93,7 @@ class _ProgramsListState extends State<ProgramsList> {
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0),
       child: _buildList(),
-      color: Color.fromARGB(33, 0, 0, 0),
+      color: Styles.textColorDefault,
     );
   }
 }

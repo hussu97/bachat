@@ -82,6 +82,16 @@ flutter:
           weight: 700
         - asset: assets/fonts/Roboto-900.ttf
           weight: 900
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-100.ttf
+          weight: 100
+        - asset: assets/fonts/Montserrat-300.ttf
+          weight: 300
+        - asset: assets/fonts/Montserrat-500.ttf
+          weight: 500
+        - asset: assets/fonts/Montserrat-700.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

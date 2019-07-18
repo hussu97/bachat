@@ -1,6 +1,5 @@
+import './styles.dart';
 import 'package:flutter/material.dart';
-
-import './rewards_list.dart';
 
 class DataSearch extends SearchDelegate<String> {
   List<String> _list;
@@ -16,7 +15,10 @@ class DataSearch extends SearchDelegate<String> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: Icon(
+          Icons.clear,
+          color: Styles.textColorDefaultInverse,
+        ),
         onPressed: () {
           query = '';
         },
@@ -30,6 +32,7 @@ class DataSearch extends SearchDelegate<String> {
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
         progress: transitionAnimation,
+        color: Styles.textColorDefaultInverse,
       ),
       onPressed: () {
         close(context, null);
@@ -40,7 +43,7 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     close(context, query);
-    return SizedBox.shrink(); 
+    return SizedBox.shrink();
   }
 
   @override
