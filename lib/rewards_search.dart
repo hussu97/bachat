@@ -64,11 +64,11 @@ class DataSearch extends SearchDelegate<String> {
         title: RichText(
           text: TextSpan(
             text: suggestionList[index].substring(0, query.length),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: Styles.textSearchFocus,
             children: [
               TextSpan(
                 text: suggestionList[index].substring(query.length),
-                style: TextStyle(color: Colors.grey),
+                style: Styles.textSearchUnfocus,
               ),
             ],
           ),

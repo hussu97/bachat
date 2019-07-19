@@ -11,7 +11,7 @@ class ColumnWithHeadingAndText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_text != null) {
+    if (_text != null && _text.isNotEmpty) {
       return Padding(
         padding: EdgeInsets.all(_padding),
         child: Column(

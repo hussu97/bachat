@@ -92,7 +92,18 @@ class Styles {
     fontWeight: _fontWeightDefault,
     color: textColorDefault
   );
-
+  static final textSearchUnfocus = TextStyle(
+    fontFamily: _fontNameTitle,
+    fontSize: _textSizeXSmall,
+    color: _textColorSecondary,
+    fontWeight: _fontWeightDefault,
+  );
+  static final textSearchFocus = TextStyle(
+    fontFamily: _fontNameTitle,
+    fontSize: _textSizeXSmall,
+    color: textColorDefaultInverse,
+    fontWeight: _fontWeightBold,
+  );
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }

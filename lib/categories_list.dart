@@ -45,41 +45,46 @@ class _CategoriesListState extends State<CategoriesList> {
         String categoryName = categories[index]['offer_type'];
         String categoryCount = categories[index]['count'].toString();
         String title = '$categoryName ($categoryCount)';
-        return new Card(
-          margin: EdgeInsets.only(top: 12.0, right: 5.0, left: 5.0, bottom: 5.0),
-          elevation: 4.0,
-          child: ListTile(
-            title: Text(
-              new ReCase(title).sentenceCase,
-              style: Styles.textListItemTitle,
-            ),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () {
-              String api = '${widget._api}?category=$categoryName';
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(
-                      iconTheme: IconThemeData(
-                        color: Styles.textColorDefaultInverse,
+        if (categoryName != '') {
+          return new Card(
+            margin:
+                EdgeInsets.only(top: 12.0, right: 5.0, left: 5.0, bottom: 5.0),
+            elevation: 4.0,
+            child: ListTile(
+              title: Text(
+                new ReCase(title).sentenceCase,
+                style: Styles.textListItemTitle,
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                String api = '${widget._api}?category=$categoryName';
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        iconTheme: IconThemeData(
+                          color: Styles.textColorDefaultInverse,
+                        ),
+                        backgroundColor: Styles.textColorDefault,
+                        title: Text(
+                          new ReCase(title).sentenceCase,
+                          style: Styles.textScreenTitle,
+                        ),
                       ),
-                      backgroundColor: Styles.textColorDefault,
-                      title: Text(
-                        new ReCase(title).sentenceCase,
-                        style: Styles.textScreenTitle,
+                      body: RewardsList(
+                        baseUrl: widget._baseUrl,
+                        api: api,
                       ),
-                    ),
-                    body: RewardsList(
-                      baseUrl: widget._baseUrl,
-                      api: api,
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
+                );
+              },
+            ),
+          );
+        } else {
+          return new SizedBox.shrink();
+        }
       },
     );
   }
