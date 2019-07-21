@@ -23,9 +23,12 @@ class RewardDetailsContentBottom extends StatelessWidget {
       child: Row(
         children: <Widget>[
           IconBuilder(FontAwesomeIcons.handshake),
-          Text(
-            '$rewardOrigin customers',
-            style: Styles.textDetailsPageSubtitle,
+          Flexible(
+            child: Text(
+              '$rewardOrigin customers',
+              style: Styles.textDetailsPageSubtitle,
+              textAlign: TextAlign.center,
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(right: _padding),
@@ -37,30 +40,52 @@ class RewardDetailsContentBottom extends StatelessWidget {
     );
   }
 
-  Widget _buildLinkRow(String link) {
+  Widget _buildLinksRow(String link, String website) {
+    if (link.isEmpty && website.isEmpty) return new SizedBox.shrink();
+    List<Widget> buttons = new List<Widget>();
     if (link != null && link.isNotEmpty) {
-      return Padding(
-        padding: EdgeInsets.all(_padding),
-        child: Center(
-          child: RaisedButton(
-            child: Text(
-              'Check out more',
-              style: Styles.textButton,
-            ),
-            color: Styles.textColorTertiary,
-            onPressed: () async {
-              if (await canLaunch('$link')) {
-                await launch('$link');
-              } else {
-                throw 'Could not launch $link';
-              }
-            },
+      buttons.add(
+        RaisedButton(
+          child: Text(
+            'Offer details',
+            style: Styles.textButton,
           ),
+          color: Styles.textColorTertiary,
+          onPressed: () async {
+            if (await canLaunch('$link')) {
+              await launch('$link');
+            } else {
+              throw 'Could not launch $link';
+            }
+          },
         ),
       );
-    } else {
-      return SizedBox.shrink();
     }
+    if (website != null && website.isNotEmpty) {
+      buttons.add(
+        RaisedButton(
+          child: Text(
+            'Offer site',
+            style: Styles.textButton,
+          ),
+          color: Styles.textColorTertiary,
+          onPressed: () async {
+            if (await canLaunch('$website')) {
+              await launch('$website');
+            } else {
+              throw 'Could not launch $website';
+            }
+          },
+        ),
+      );
+    }
+    return Padding(
+      padding: EdgeInsets.all(_padding),
+      child: Row(
+        children: buttons,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      ),
+    );
   }
 
   Widget _buildRatingRow(String rating) {
@@ -85,6 +110,14 @@ class RewardDetailsContentBottom extends StatelessWidget {
     }
   }
 
+  Widget _buildAddressOrLocationRow(String address, String location) {
+    if (address != null && address.isNotEmpty) {
+      return TwoItemRowWithIcon(address, FontAwesomeIcons.locationArrow);
+    } else {
+      return TwoItemRowWithIcon(location, FontAwesomeIcons.locationArrow);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -93,13 +126,13 @@ class RewardDetailsContentBottom extends StatelessWidget {
       _buildRatingRow(_reward.rating),
       TwoItemRowWithIcon(_reward.cuisine, FontAwesomeIcons.utensils),
       TwoItemRowWithIcon(_reward.workingHours, FontAwesomeIcons.clock),
-      TwoItemRowWithIcon(_reward.location, FontAwesomeIcons.locationArrow),
+      _buildAddressOrLocationRow(_reward.address, _reward.location),
       TwoItemRowWithIcon(_reward.cost, FontAwesomeIcons.moneyBill),
       TwoItemRowWithIcon(_reward.expiryDate, FontAwesomeIcons.history),
       ContactNumberRow(_reward.contact, _padding),
       ColumnWithHeadingAndText(
           'Terms & Conditions', _reward.termsAndConditions),
-      _buildLinkRow(_reward.link),
+      _buildLinksRow(_reward.link, _reward.website),
     ]);
   }
 }

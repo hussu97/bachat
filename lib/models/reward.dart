@@ -16,6 +16,9 @@ class Reward {
   final String cuisine; //
   final String offerDescription; //
   final String offerType;
+  final String address;
+  final String website;
+  final String slug;
 
   Reward({
     this.companyName,
@@ -34,7 +37,10 @@ class Reward {
     this.offerDescription,
     this.offerType,
     this.rating,
-    this.termsAndConditions
+    this.termsAndConditions,
+    this.address,
+    this.website,
+    this.slug,
   });
 
   factory Reward.fromJson(Map<String, dynamic> json) {
@@ -55,7 +61,10 @@ class Reward {
       offerDescription: json['offer_description'],
       offerType: json['offer_type'],
       rating: json['rating'],
-      termsAndConditions: json['terms_and_conditions']
+      termsAndConditions: json['terms_and_conditions'],
+      address: json['address'],
+      website: json['website'],
+      slug: json['slug'],
     );
   }
 }

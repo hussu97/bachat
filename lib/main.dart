@@ -6,9 +6,10 @@ import './rewards_list.dart';
 import './programs_list.dart';
 import './categories_list.dart';
 import './styles.dart';
-
+import './constants/constants.dart';
+// void mainDelegate() => runApp(MyApp());
 void main() => runApp(MyApp());
-
+void mainDelegate() {}
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // TODO add final keyword to url
-  String baseUrl = 'http://192.168.1.106:5002';
+  final String baseUrl = 'http://niranjanrakesh.me:3000';
   final String rewardsApi = '/rewards';
   final String programsApi = '/rewards/programs';
   final String companyNamesApi = '/rewards/companies';
@@ -98,8 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildAppBarBottom() {
     return PreferredSize(
-      preferredSize: const Size(double.infinity, kToolbarHeight+50.0),
-      // TODO remove TextField widget in release
+      preferredSize: const Size(double.infinity, kToolbarHeight),
       child: Column(
         children: <Widget>[
           Container(
@@ -110,14 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 1.0,
               )),
             ),
-          ),
-          TextField(
-            onSubmitted: (text) {
-              setState(() {
-                baseUrl = text;
-                print(baseUrl);
-              });
-            },
           ),
           TabBar(
             unselectedLabelColor:
