@@ -7,8 +7,9 @@ import './components/reward_list_item/reward_list_item.dart';
 class RewardsList extends StatefulWidget {
   final String api;
   final String baseUrl;
+  final String programParams;
   final Function addRewardsCount;
-  RewardsList({this.baseUrl, this.api, this.addRewardsCount});
+  RewardsList({this.baseUrl, this.api,this.programParams, this.addRewardsCount});
 
   @override
   _RewardsListState createState() => _RewardsListState();
@@ -45,7 +46,7 @@ class _RewardsListState extends State<RewardsList> {
   @override
   void initState() {
     dio.options.baseUrl = widget.baseUrl;
-    moreDataUrl = widget.api;
+    moreDataUrl = '${widget.api}?program=${widget.programParams}';
     this._getMoreData();
     super.initState();
     _scrollController.addListener(() {
@@ -103,7 +104,7 @@ class _RewardsListState extends State<RewardsList> {
   Widget build(BuildContext context) {
     return Container(
       child: _buildList(),
-      color: Styles.textColorDefault,
+      color: Styles.colorDefault,
     );
   }
 }

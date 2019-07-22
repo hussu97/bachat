@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './rewards_search.dart';
 import './rewards_list.dart';
 import './programs_list.dart';
 import './categories_list.dart';
 import './styles.dart';
+import './settings/settings.dart';
 import './constants/constants.dart';
+
 // void mainDelegate() => runApp(MyApp());
 void main() => runApp(MyApp());
 void mainDelegate() {}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,11 +35,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String baseUrl = 'http://niranjanrakesh.me:3000';
-  final String rewardsApi = '/rewards';
-  final String programsApi = '/rewards/programs';
-  final String companyNamesApi = '/rewards/companies';
-  final String categoriesApi = '/rewards/categories';
+  static String base = 'http://192.168.1.106:3000';
+  static String latestApiUrl = '/api/v1';
+  String baseUrl = '$base$latestApiUrl';
+  String rewardsApi = '/rewards';
+  String programsApi = '/programs';
+  String companyNamesApi = '/companies';
+  String categoriesApi = '/categories';
+  String programParams = '';
   final Dio dio = new Dio();
   final List<String> tabs = [
     'All',
@@ -57,9 +64,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _loadSearchData() async {
-    dio.options.baseUrl = baseUrl;
-    final response = await dio.get(companyNamesApi);
+  void updateProgramParams(String programParam) {
+    setState(() {
+      this.programParams = programParam;
+      this.initState();
+    });
+  }
+
+  Future _loadProgramFilterData() async {
+    programParams = '';
+    final response = await dio.get(programsApi);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    for (var i in response.data['data']) {
+      if (prefs.getBool(i['reward_origin']) ?? true) {
+        programParams += i['reward_origin'];
+        programParams += ',';
+      }
+    }
+    programParams =
+        programParams.substring(0, programParams.length - 1);
+  }
+
+  Future _loadSearchData() async {
+    await this._loadProgramFilterData();
+    companyNames.clear();
+    print('program filter is $programParams');
+    final response = await dio.get('$companyNamesApi?program=$programParams');
     for (int i = 0; i < response.data['data'].length; i++) {
       companyNames.add(response.data['data'][i]);
     }
@@ -67,21 +97,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    this._loadSearchData();
-    super.initState();
+    dio.options.baseUrl = baseUrl;
+    this._loadSearchData().then((v)=>super.initState());
   }
 
   void _showSearchResultsScreen(String result) {
-    String apiLink = '$companyNamesApi?company=$result';
+    String apiLink = '$companyNamesApi/$result';
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-              color: Styles.textColorDefaultInverse,
+              color: Styles.colorDefaultInverse,
             ),
-            backgroundColor: Styles.textColorDefault,
+            backgroundColor: Styles.colorDefault,
             title: Text(
               'Search Results',
               style: Styles.textScreenTitle,
@@ -90,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: RewardsList(
             baseUrl: baseUrl,
             api: apiLink,
+            programParams: programParams,
           ),
         ),
       ),
@@ -111,11 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           TabBar(
-            unselectedLabelColor:
-                Styles.textColorDefaultInverse.withOpacity(0.4),
+            unselectedLabelColor: Styles.colorDefaultInverse.withOpacity(0.4),
             unselectedLabelStyle: Styles.textTabBar,
-            indicatorColor: Styles.textColorTertiary,
-            labelColor: Styles.textColorTertiary,
+            indicatorColor: Styles.colorTertiary,
+            labelColor: Styles.colorTertiary,
             labelStyle: Styles.textTabBarSelected,
             isScrollable: true,
             tabs: _buildTabList(),
@@ -131,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Styles.textColorDefault,
+          backgroundColor: Styles.colorDefault,
           bottom: _buildAppBarBottom(),
           title: Text(
             widget.title,
@@ -140,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),
-              color: Styles.textColorDefaultInverse,
+              color: Styles.colorDefaultInverse,
               onPressed: () {
                 Future<String> result = showSearch(
                   context: context,
@@ -150,6 +180,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (res != null) _showSearchResultsScreen(res);
                 });
               },
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              color: Styles.colorDefaultInverse,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        iconTheme: IconThemeData(
+                          color: Styles.colorDefaultInverse,
+                        ),
+                        backgroundColor: Styles.colorDefault,
+                        title: Text(
+                          'Settings',
+                          style: Styles.textScreenTitle,
+                        ),
+                      ),
+                      body: Settings(baseUrl, programsApi, updateProgramParams),
+                    ),
+                  ),
+                );
+              },
             )
           ],
         ),
@@ -158,16 +212,19 @@ class _MyHomePageState extends State<MyHomePage> {
             RewardsList(
               baseUrl: baseUrl,
               api: rewardsApi,
+              programParams: programParams,
               addRewardsCount: addAllRewardsCount,
             ),
             ProgramsList(
               baseUrl,
               programsApi,
+              programParams
             ),
             Icon(Icons.access_alarms),
             CategoriesList(
               baseUrl,
               categoriesApi,
+              programParams
             ),
           ],
         ),

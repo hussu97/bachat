@@ -50,7 +50,7 @@ class RewardDetailsContentBottom extends StatelessWidget {
             'Offer details',
             style: Styles.textButton,
           ),
-          color: Styles.textColorTertiary,
+          color: Styles.colorTertiary,
           onPressed: () async {
             if (await canLaunch('$link')) {
               await launch('$link');
@@ -68,7 +68,7 @@ class RewardDetailsContentBottom extends StatelessWidget {
             'Offer site',
             style: Styles.textButton,
           ),
-          color: Styles.textColorTertiary,
+          color: Styles.colorTertiary,
           onPressed: () async {
             if (await canLaunch('$website')) {
               await launch('$website');
@@ -96,8 +96,8 @@ class RewardDetailsContentBottom extends StatelessWidget {
           rating: ratingDouble,
           itemCount: 5,
           itemSize: 20.0,
-          emptyColor: Styles.textColorGreen.withAlpha(50),
-          fillColor: Styles.textColorGreen,
+          emptyColor: Styles.colorGreen.withAlpha(50),
+          fillColor: Styles.colorGreen,
         );
       } else {
         return Text(

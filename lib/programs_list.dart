@@ -8,8 +8,9 @@ import './styles.dart';
 class ProgramsList extends StatefulWidget {
   final String _baseUrl;
   final String _api;
+  final String _programParams;
 
-  ProgramsList(this._baseUrl, this._api);
+  ProgramsList(this._baseUrl, this._api, this._programParams);
 
   @override
   _ProgramsListState createState() => _ProgramsListState();
@@ -20,7 +21,7 @@ class _ProgramsListState extends State<ProgramsList> {
   final Dio dio = new Dio();
 
   void _loadData() async {
-    final response = await dio.get(widget._api);
+    final response = await dio.get('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
     for (int i = 0; i < response.data['data'].length; i++) {
       tempList.add(response.data['data'][i]);
@@ -57,16 +58,16 @@ class _ProgramsListState extends State<ProgramsList> {
             ),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
-              String api = '${widget._api}?program=$programName';
+              String api = '${widget._api}/$programName';
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Scaffold(
                     appBar: AppBar(
                       iconTheme: IconThemeData(
-                        color: Styles.textColorDefaultInverse,
+                        color: Styles.colorDefaultInverse,
                       ),
-                      backgroundColor: Styles.textColorDefault,
+                      backgroundColor: Styles.colorDefault,
                       title: Text(
                         title,
                         style: Styles.textScreenTitle,
@@ -75,6 +76,7 @@ class _ProgramsListState extends State<ProgramsList> {
                     body: RewardsList(
                       baseUrl: widget._baseUrl,
                       api: api,
+                      programParams: widget._programParams,
                     ),
                   ),
                 ),
@@ -91,7 +93,7 @@ class _ProgramsListState extends State<ProgramsList> {
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0, bottom: 12.0),
       child: _buildList(),
-      color: Styles.textColorDefault,
+      color: Styles.colorDefault,
     );
   }
 }

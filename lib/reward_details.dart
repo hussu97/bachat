@@ -33,9 +33,9 @@ class RewardDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Styles.textColorDefaultInverse,
+          color: Styles.colorDefaultInverse,
         ),
-        backgroundColor: Styles.textColorDefault,
+        backgroundColor: Styles.colorDefault,
         title: Text(
           _reward.companyName,
           style: Styles.textScreenTitle,

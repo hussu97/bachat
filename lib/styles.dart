@@ -5,11 +5,11 @@ class Styles {
   static const _textSizeDefault = 18.0;
   static const _textSizeSmall = 16.0;
   static const _textSizeXSmall = 14.0;
-  static final Color textColorDefault = _hexToColor('ffffff');
-  static final Color _textColorSecondary = _hexToColor('7f8185');
-  static final Color textColorTertiary = Colors.blue;
-  static final Color textColorDefaultInverse = _hexToColor('000000');
-  static final Color textColorGreen = _hexToColor('0b9620');
+  static final Color colorDefault = _hexToColor('ffffff');
+  static final Color _colorSecondary = _hexToColor('7f8185');
+  static final Color colorTertiary = Colors.blue;
+  static final Color colorDefaultInverse = _hexToColor('000000');
+  static final Color colorGreen = _hexToColor('0b9620');
   static final String _fontNameTitle = 'Montserrat';
   static final String _fontNameText = 'Roboto';
   static final FontWeight _fontWeightBold = FontWeight.w700;
@@ -18,62 +18,68 @@ class Styles {
   static final textScreenTitle = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeDefault,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightBold,
+  );
+  static final textSettingsListItemTitle = TextStyle(
+    fontFamily: _fontNameTitle,
+    fontSize: _textSizeDefault,
+    color: colorDefaultInverse,
+    fontWeight: _fontWeightDefault,
   );
   static final textCardTitle = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeDefault,
-    color: textColorDefault,
+    color: colorDefault,
     fontWeight: _fontWeightLight,
   );
   static final textCardSubtitle = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeSmall,
-    color: textColorDefault,
+    color: colorDefault,
     fontWeight: _fontWeightLight,
   );
   static final textCardOffer = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeDefault,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightDefault,
   );
   static final textDetailsPageTitle = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeLarge,
-    color: textColorDefault,
+    color: colorDefault,
     fontWeight: _fontWeightDefault,
   );
   static final textDetailsPageSubtitle = TextStyle(
     fontFamily: _fontNameText,
     fontSize: _textSizeXSmall,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightBold,
   );
   static final textDetailsPageInfo = TextStyle(
     fontFamily: _fontNameText,
     fontSize: _textSizeXSmall,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightLight,
   );
   static final textDetailsPageHeading = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeXSmall,
-    color: _textColorSecondary,
+    color: _colorSecondary,
     fontWeight: _fontWeightDefault,
   );
   static final textDetailsPageContact = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeXSmall,
-    color: textColorGreen,
+    color: colorGreen,
     fontWeight: _fontWeightLight,
     decoration: TextDecoration.underline,
   );
   static final textListItemTitle = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeXSmall,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightDefault,
   );
   static final textTabBar = TextStyle(
@@ -90,18 +96,18 @@ class Styles {
     fontFamily: _fontNameTitle,
     fontSize: _textSizeSmall,
     fontWeight: _fontWeightDefault,
-    color: textColorDefault
+    color: colorDefault
   );
   static final textSearchUnfocus = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeXSmall,
-    color: _textColorSecondary,
+    color: _colorSecondary,
     fontWeight: _fontWeightDefault,
   );
   static final textSearchFocus = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeXSmall,
-    color: textColorDefaultInverse,
+    color: colorDefaultInverse,
     fontWeight: _fontWeightBold,
   );
   static Color _hexToColor(String code) {

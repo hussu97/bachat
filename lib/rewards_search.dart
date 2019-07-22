@@ -17,7 +17,7 @@ class DataSearch extends SearchDelegate<String> {
       IconButton(
         icon: Icon(
           Icons.clear,
-          color: Styles.textColorDefaultInverse,
+          color: Styles.colorDefaultInverse,
         ),
         onPressed: () {
           query = '';
@@ -32,7 +32,7 @@ class DataSearch extends SearchDelegate<String> {
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
         progress: transitionAnimation,
-        color: Styles.textColorDefaultInverse,
+        color: Styles.colorDefaultInverse,
       ),
       onPressed: () {
         close(context, null);
