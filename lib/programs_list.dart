@@ -1,3 +1,4 @@
+import 'package:bachat/components/reward_origin_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -49,10 +50,7 @@ class _ProgramsListState extends State<ProgramsList> {
           margin: EdgeInsets.only(top: 14.0, right: 5.0, left: 5.0),
           elevation: 4.0,
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(logoUrl),
-              backgroundColor: Colors.white,
-            ),
+            leading: RewardOriginLogo(logoUrl),
             title: Text(
               title,
               style: Styles.textListItemTitle,
@@ -91,7 +89,7 @@ class _ProgramsListState extends State<ProgramsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0),
+      padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0, bottom: 12.0),
       child: _buildList(),
       color: Styles.textColorDefault,
     );
