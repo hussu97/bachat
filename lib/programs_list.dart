@@ -21,7 +21,8 @@ class _ProgramsListState extends State<ProgramsList> {
   final Dio dio = new Dio();
 
   void _loadData() async {
-    final response = await dio.get('${widget._api}?program=${widget._programParams}');
+    final response =
+        await dio.get('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
     for (int i = 0; i < response.data['data'].length; i++) {
       tempList.add(response.data['data'][i]);
@@ -48,7 +49,12 @@ class _ProgramsListState extends State<ProgramsList> {
         String programCount = programs[index]['count'].toString();
         String title = '$programName ($programCount)';
         return new Card(
-          margin: EdgeInsets.only(top: 14.0, right: 5.0, left: 5.0),
+          margin: EdgeInsets.only(
+            top: 8.0,
+            right: 5.0,
+            left: 5.0,
+            bottom: 8.0,
+          ),
           elevation: 4.0,
           child: ListTile(
             leading: RewardOriginLogo(logoUrl),
@@ -91,7 +97,7 @@ class _ProgramsListState extends State<ProgramsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0, bottom: 12.0),
+      padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0),
       child: _buildList(),
       color: Styles.colorDefault,
     );

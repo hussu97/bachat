@@ -6,7 +6,7 @@ import '../../styles.dart';
 class RewardDetailsContentTop extends StatelessWidget {
   final String _backgroundImage;
   final String _offer;
-  final double _height = 250.0;
+  final double _height = 200.0;
   final Color _opacityOverlay = Color.fromARGB(0x59, 0, 0, 0);
 
   RewardDetailsContentTop(this._backgroundImage, this._offer);

@@ -47,7 +47,7 @@ class ContactNumberRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_contact != null) {
+    if (_contact != null && _contact.isNotEmpty) {
       return Padding(
         padding: EdgeInsets.all(_padding),
         child: Row(

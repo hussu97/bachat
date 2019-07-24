@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-import './rewards_list.dart';
-import './styles.dart';
+import '../../rewards_list.dart';
+import '../../styles.dart';
 
-class CategoriesList extends StatefulWidget {
+class LocationsList extends StatefulWidget {
   final String _baseUrl;
   final String _api;
   final String _programParams;
 
-  CategoriesList(this._baseUrl, this._api, this._programParams);
+  LocationsList(this._baseUrl, this._api, this._programParams);
 
   @override
-  _CategoriesListState createState() => _CategoriesListState();
+  _LocationsListState createState() => _LocationsListState();
 }
 
-class _CategoriesListState extends State<CategoriesList> {
-  List categories = new List();
+class _LocationsListState extends State<LocationsList> {
+  List cities = new List();
   final Dio dio = new Dio();
 
   void _loadData() async {
     final response =
         await dio.get('${widget._api}?program=${widget._programParams}');
+    print('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
     for (int i = 0; i < response.data['data'].length; i++) {
       tempList.add(response.data['data'][i]);
     }
-    tempList.sort((a, b) => a['offer_type'].compareTo(b['offer_type']));
     setState(() {
-      categories.addAll(tempList);
+      cities.addAll(tempList);
     });
   }
 
@@ -39,14 +39,15 @@ class _CategoriesListState extends State<CategoriesList> {
     super.initState();
   }
 
-  Widget _buildList() {
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: categories.length,
+      itemCount: cities.length,
       itemBuilder: (BuildContext context, int index) {
-        String categoryName = categories[index]['offer_type'];
-        String categoryCount = categories[index]['count'].toString();
-        String title = '$categoryName ($categoryCount)';
-        if (categoryName != '') {
+        String cityName = cities[index]['city'];
+        String cityCount = cities[index]['count'].toString();
+        String title = '$cityName ($cityCount)';
+        if (cityName != '') {
           return new Card(
             margin: EdgeInsets.only(
               top: 8.0,
@@ -63,7 +64,7 @@ class _CategoriesListState extends State<CategoriesList> {
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 String api =
-                    '${widget._api}/$categoryName?program=${widget._programParams}';
+                    '${widget._api}/$cityName?program=${widget._programParams}';
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -93,15 +94,6 @@ class _CategoriesListState extends State<CategoriesList> {
           return new SizedBox.shrink();
         }
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0, bottom: 12.0),
-      child: _buildList(),
-      color: Styles.colorDefault,
     );
   }
 }

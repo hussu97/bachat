@@ -82,6 +82,12 @@ class Styles {
     color: colorDefaultInverse,
     fontWeight: _fontWeightDefault,
   );
+  static final textLocationTabTitle = TextStyle(
+    fontFamily: _fontNameTitle,
+    fontSize: _textSizeSmall,
+    color: colorDefaultInverse,
+    fontWeight: _fontWeightDefault,
+  );
   static final textTabBar = TextStyle(
     fontFamily: _fontNameTitle,
     fontSize: _textSizeSmall,

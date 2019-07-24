@@ -1,3 +1,5 @@
+import 'package:bachat/models/location.dart';
+
 class Reward {
   String companyName; //
   final String backgroundImage; //
@@ -8,7 +10,6 @@ class Reward {
   final String workingHours; //
   String cost; //
   final String termsAndConditions; //
-  final String location; //
   final String expiryDate; //
   final String link; //
   String contact; //
@@ -16,9 +17,10 @@ class Reward {
   final String cuisine; //
   final String offerDescription; //
   final String offerType;
-  final String address;
   final String website;
   final String slug;
+  final String id;
+  final List<Location> locations;
 
   Reward({
     this.companyName,
@@ -33,17 +35,21 @@ class Reward {
     this.cuisine,
     this.expiryDate,
     this.link,
-    this.location,
     this.offerDescription,
     this.offerType,
     this.rating,
     this.termsAndConditions,
-    this.address,
     this.website,
     this.slug,
+    this.id,
+    this.locations
   });
 
   factory Reward.fromJson(Map<String, dynamic> json) {
+    List<Location> l = new List();
+    for (var i in json['locations']) {
+      l.add(Location.fromJson(i));
+    }
     return Reward(
       companyName: json['company_name'],
       backgroundImage: json['background_image'],
@@ -57,14 +63,14 @@ class Reward {
       cuisine: json['cuisine'],
       expiryDate: json['expiry_date'],
       link: json['link'],
-      location: json['location'],
       offerDescription: json['offer_description'],
       offerType: json['offer_type'],
       rating: json['rating'],
       termsAndConditions: json['terms_and_conditions'],
-      address: json['address'],
       website: json['website'],
       slug: json['slug'],
+      id: json['id'],
+      locations: l
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:bachat/models/reward.dart';
 import './reward_list_item_bottom.dart';
 import './reward_list_item_top.dart';
 import 'package:flutter/material.dart';
-import 'package:recase/recase.dart';
 
 import '../../reward_details.dart';
 
@@ -11,10 +10,7 @@ class RewardListItem extends StatelessWidget {
 
   final Reward reward;
 
-  RewardListItem(this.reward){
-    // formatting the cases of certain fields
-    this.reward.companyName = new ReCase(this.reward.companyName).titleCase;
-  }
+  RewardListItem(this.reward);
   
   @override
   Widget build(BuildContext context) {

@@ -7,9 +7,11 @@ import '../column_with_heading_and_text.dart';
 import '../two_item_row.dart';
 import '../../styles.dart';
 import '../../models/reward.dart';
+import '../../models/location.dart';
 import '../icon_builder.dart';
 import '../reward_origin_logo.dart';
 import './contact_number_row.dart';
+import './address_row.dart';
 
 class RewardDetailsContentBottom extends StatelessWidget {
   final Reward _reward;
@@ -65,7 +67,7 @@ class RewardDetailsContentBottom extends StatelessWidget {
       buttons.add(
         RaisedButton(
           child: Text(
-            'Offer site',
+            'Company site',
             style: Styles.textButton,
           ),
           color: Styles.colorTertiary,
@@ -110,11 +112,15 @@ class RewardDetailsContentBottom extends StatelessWidget {
     }
   }
 
-  Widget _buildAddressOrLocationRow(String address, String location) {
-    if (address != null && address.isNotEmpty) {
-      return TwoItemRowWithIcon(address, FontAwesomeIcons.locationArrow);
+  List<Widget> _buildAddressRows(List<Location> locations) {
+    if (locations.length > 0) {
+      List<Widget> l = new List();
+      for (var i in locations) {
+        l.add(AddressRow(i, FontAwesomeIcons.locationArrow));
+      }
+      return l;
     } else {
-      return TwoItemRowWithIcon(location, FontAwesomeIcons.locationArrow);
+      return [SizedBox.shrink()];
     }
   }
 
@@ -126,13 +132,15 @@ class RewardDetailsContentBottom extends StatelessWidget {
       _buildRatingRow(_reward.rating),
       TwoItemRowWithIcon(_reward.cuisine, FontAwesomeIcons.utensils),
       TwoItemRowWithIcon(_reward.workingHours, FontAwesomeIcons.clock),
-      _buildAddressOrLocationRow(_reward.address, _reward.location),
       TwoItemRowWithIcon(_reward.cost, FontAwesomeIcons.moneyBill),
       TwoItemRowWithIcon(_reward.expiryDate, FontAwesomeIcons.history),
       ContactNumberRow(_reward.contact, _padding),
       ColumnWithHeadingAndText(
           'Terms & Conditions', _reward.termsAndConditions),
       _buildLinksRow(_reward.link, _reward.website),
+      Column(
+        children: _buildAddressRows(_reward.locations),
+      ),
     ]);
   }
 }

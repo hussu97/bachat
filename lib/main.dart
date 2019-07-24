@@ -6,6 +6,7 @@ import './rewards_search.dart';
 import './rewards_list.dart';
 import './programs_list.dart';
 import './categories_list.dart';
+import './locations_tab.dart';
 import './styles.dart';
 import './settings/settings.dart';
 import './constants/constants.dart';
@@ -37,11 +38,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   static String base = 'http://192.168.1.106:3000';
   static String latestApiUrl = '/api/v1';
-  String baseUrl = '$base$latestApiUrl';
-  String rewardsApi = '/rewards';
-  String programsApi = '/programs';
-  String companyNamesApi = '/companies';
-  String categoriesApi = '/categories';
+  final String baseUrl = '$base$latestApiUrl';
+  final String rewardsEndpoint = '/rewards';
+  final String programsEndpoint = '/programs';
+  final String companyNamesEndpoint = '/companies';
+  final String categoriesEndpoint = '/categories';
+  final String citiesEndpoint = '/cities';
+  final String locationsEndpoint = '/locations';
   String programParams = '';
   final Dio dio = new Dio();
   final List<String> tabs = [
@@ -73,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _loadProgramFilterData() async {
     programParams = '';
-    final response = await dio.get(programsApi);
+    final response = await dio.get(programsEndpoint);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     for (var i in response.data['data']) {
       if (prefs.getBool(i['reward_origin']) ?? true) {
@@ -81,15 +84,14 @@ class _MyHomePageState extends State<MyHomePage> {
         programParams += ',';
       }
     }
-    programParams =
-        programParams.substring(0, programParams.length - 1);
+    programParams = programParams.substring(0, programParams.length - 1);
   }
 
   Future _loadSearchData() async {
     await this._loadProgramFilterData();
     companyNames.clear();
-    print('program filter is $programParams');
-    final response = await dio.get('$companyNamesApi?program=$programParams');
+    final response =
+        await dio.get('$companyNamesEndpoint?program=$programParams');
     for (int i = 0; i < response.data['data'].length; i++) {
       companyNames.add(response.data['data'][i]);
     }
@@ -98,11 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     dio.options.baseUrl = baseUrl;
-    this._loadSearchData().then((v)=>super.initState());
+    this._loadSearchData().then((v) => super.initState());
   }
 
   void _showSearchResultsScreen(String result) {
-    String apiLink = '$companyNamesApi/$result';
+    String apiLink = '$companyNamesEndpoint/$result';
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -199,7 +201,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: Styles.textScreenTitle,
                         ),
                       ),
-                      body: Settings(baseUrl, programsApi, updateProgramParams),
+                      body: Settings(
+                          baseUrl, programsEndpoint, updateProgramParams),
                     ),
                   ),
                 );
@@ -211,20 +214,25 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             RewardsList(
               baseUrl: baseUrl,
-              api: rewardsApi,
+              api: rewardsEndpoint,
               programParams: programParams,
               addRewardsCount: addAllRewardsCount,
             ),
             ProgramsList(
               baseUrl,
-              programsApi,
-              programParams
+              programsEndpoint,
+              programParams,
             ),
-            Icon(Icons.access_alarms),
+            LocationsTab(
+              baseUrl,
+              citiesEndpoint,
+              locationsEndpoint,
+              programParams,
+            ),
             CategoriesList(
               baseUrl,
-              categoriesApi,
-              programParams
+              categoriesEndpoint,
+              programParams,
             ),
           ],
         ),

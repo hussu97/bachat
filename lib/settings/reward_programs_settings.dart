@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 import '../styles.dart';
-import '../components/reward_origin_logo.dart';
 
 class RewardsProgramsSettings extends StatefulWidget {
   final Function _apiUpdateCallback;
@@ -36,8 +35,6 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
       tempList.add(rewardOrigin);
       tempList2.add(prefs.getBool(rewardOrigin) ?? true);
     }
-    print(tempList);
-
     setState(() {
       programs.addAll(tempList);
       isEnabled.addAll(tempList2);
@@ -53,7 +50,6 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
       }
     }
     programParameter = programParameter.substring(0, programParameter.length - 1);
-    print(programParameter);
     widget._apiUpdateCallback(programParameter);
   }
 
