@@ -18,7 +18,6 @@ class Reward {
   final String offerDescription; //
   final String offerType;
   final String website;
-  final String slug;
   final String id;
   final List<Location> locations;
 
@@ -40,7 +39,6 @@ class Reward {
     this.rating,
     this.termsAndConditions,
     this.website,
-    this.slug,
     this.id,
     this.locations
   });
@@ -68,7 +66,6 @@ class Reward {
       rating: json['rating'],
       termsAndConditions: json['terms_and_conditions'],
       website: json['website'],
-      slug: json['slug'],
       id: json['id'],
       locations: l
     );

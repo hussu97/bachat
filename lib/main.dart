@@ -36,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static String base = 'http://192.168.1.106:3000';
+  static String base = 'http://192.168.0.140:3000';
   static String latestApiUrl = '/api/v1';
   final String baseUrl = '$base$latestApiUrl';
   final String rewardsEndpoint = '/rewards';

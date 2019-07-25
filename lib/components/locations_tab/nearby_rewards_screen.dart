@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 import '../../styles.dart';
-import './google_maps.dart';
+import './location_map_gmaps.dart';
 import '../../rewards_list.dart';
+import './location_map_bottom.dart';
 
 class NearbyRewards extends StatefulWidget {
   final String _baseUrl;
   final String _api;
   final String _programParams;
-  final bool _isLocationAvailable;
-
   NearbyRewards(
     this._baseUrl,
     this._api,
     this._programParams,
-    this._isLocationAvailable,
   );
 
   @override
@@ -28,6 +27,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
   Map<MarkerId, Marker> markers = {};
   Map<MarkerId, Marker> tempMarkers = {};
   Function loadLocationData;
+  bool _isLocationAvailable = true;
 
   void _addMarker(markerData, markerList) {
     final MarkerId markerId =
@@ -74,7 +74,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
   }
 
   Future _loadLocationData(LatLngBounds visibleRegion) async {
-    print('in gud function');
     Map<MarkerId, Marker> tempMarkers = {};
     if (visibleRegion != null) {
       double lat2 = visibleRegion.northeast.latitude;
@@ -90,10 +89,29 @@ class _NearbyRewardsState extends State<NearbyRewards> {
     }
   }
 
+  void _checkLocationPermission() async {
+    PermissionStatus permission =
+        await LocationPermissions().checkPermissionStatus();
+    print(permission);
+    bool isLocationAvailable;
+    if (permission != PermissionStatus.granted) {
+      isLocationAvailable = await LocationPermissions().requestPermissions(
+            permissionLevel: LocationPermissionLevel.locationWhenInUse,
+          ) ==
+          PermissionStatus.granted;
+    } else {
+      isLocationAvailable = true;
+    }
+    setState(() {
+      _isLocationAvailable = isLocationAvailable;
+    });
+  }
+
   @override
   void initState() {
     dio.options.baseUrl = widget._baseUrl;
     loadLocationData = _loadLocationData;
+    _checkLocationPermission();
     super.initState();
   }
 
@@ -116,19 +134,17 @@ class _NearbyRewardsState extends State<NearbyRewards> {
             widget._baseUrl,
             widget._api,
             widget._programParams,
-            widget._isLocationAvailable,
+            _isLocationAvailable,
             loadLocationData,
             markers,
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                'Bottom half work in progress',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
+          LocationMapBottom(
+            widget._baseUrl,
+            '/coordinates',
+            widget._programParams,
+            _isLocationAvailable,
+            _checkLocationPermission,
+          )
         ],
       ),
     );

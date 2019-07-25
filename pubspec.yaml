@@ -33,6 +33,7 @@ dependencies:
   location_permissions: ^2.0.2
   geolocator: ^5.1.1
   google_maps_flutter: ^0.5.19
+  progress_indicators: ^0.1.4
 
 dev_dependencies:
   flutter_test:

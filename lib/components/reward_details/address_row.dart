@@ -13,7 +13,7 @@ class AddressRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_location.address != null && _location.address.isNotEmpty) {
+    if (_location.formattedAddress != null && _location.formattedAddress.isNotEmpty) {
       return Padding(
         padding: EdgeInsets.all(10.0),
         child: Row(

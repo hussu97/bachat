@@ -38,15 +38,15 @@ class LocationsTabTop extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Go to maps page',
+                    'Check out now',
                     style: Styles.textButton,
+                    textAlign: TextAlign.center,
                   )
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
               color: Styles.colorTertiary,
               onPressed: () async {
-                bool isLocationAvailable = false;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -54,7 +54,6 @@ class LocationsTabTop extends StatelessWidget {
                       _baseUrl,
                       _api,
                       _programParams,
-                      isLocationAvailable,
                     ),
                   ),
                 );

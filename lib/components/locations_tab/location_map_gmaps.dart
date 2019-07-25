@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dio/dio.dart';
-import 'package:location_permissions/location_permissions.dart';
-
-import '../../styles.dart';
 
 class GMapsWidget extends StatefulWidget {
   final String _baseUrl;
@@ -30,6 +27,7 @@ class _GMapsWidgetState extends State<GMapsWidget> {
   final double _initialLon = 55.3696635;
   LatLng _initialPos;
   LatLngBounds _visibleRegion;
+  Geolocator geolocator = Geolocator();
 
   void _onMapCreated(GoogleMapController controller) {
     this.controller = controller;
@@ -56,21 +54,20 @@ class _GMapsWidgetState extends State<GMapsWidget> {
 
   void _loadInitialPosition() async {
     if (widget._isLocationAvailable) {
-      Position position = await Geolocator()
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      Position position = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
       _initialPos = new LatLng(position.latitude, position.longitude);
     } else {
       _initialPos = new LatLng(_initialLat, _initialLon);
     }
     await this.controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: _initialPos, zoom: 14.0)));
+        CameraPosition(target: _initialPos, zoom: 17.0)));
     _loadRegion();
   }
 
   @override
   void initState() {
     dio.options.baseUrl = widget._baseUrl;
-    _loadInitialPosition();
     super.initState();
   }
 
@@ -88,40 +85,17 @@ class _GMapsWidgetState extends State<GMapsWidget> {
               target: LatLng(25.3150587, 55.3696635),
               zoom: 14.0,
             ),
+            indoorViewEnabled: true,
+            compassEnabled: true,
+            myLocationButtonEnabled: widget._isLocationAvailable,
+            myLocationEnabled: widget._isLocationAvailable,
             markers: Set<Marker>.of(markers.values),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 10.0, bottom: 10.0),
-            child: GestureDetector(
-              child: CircleAvatar(
-                child: Icon(
-                  Icons.location_on,
-                  color: Styles.colorTertiary,
-                  size: 25.0,
-                ),
-                backgroundColor: Styles.colorDefault,
-              ),
-              onTap: () async {
-                PermissionStatus permission =
-                    await LocationPermissions().checkPermissionStatus();
-                if (permission != PermissionStatus.granted) {
-                  widget._isLocationAvailable =
-                      await LocationPermissions().requestPermissions(
-                            permissionLevel:
-                                LocationPermissionLevel.locationWhenInUse,
-                          ) ==
-                          PermissionStatus.granted;
-                } else {
-                  widget._isLocationAvailable = true;
-                }
-                setState(() {
-                  _loadInitialPosition();
-                });
-              },
-            ),
+            scrollGesturesEnabled: true,
+            tiltGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            zoomGesturesEnabled: true,
           ),
         ],
-        alignment: Alignment(-1.0, 1.0),
       ),
     );
   }
