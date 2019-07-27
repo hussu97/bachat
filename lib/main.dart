@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _showSearchResultsScreen(String result) {
-    String apiLink = '$companyNamesEndpoint/$result';
+    String api = '$companyNamesEndpoint/$result';
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           body: RewardsList(
             baseUrl: baseUrl,
-            api: apiLink,
+            api: api,
             programParams: programParams,
           ),
         ),

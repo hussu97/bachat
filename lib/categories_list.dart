@@ -60,8 +60,7 @@ class _CategoriesListState extends State<CategoriesList> {
               ),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
-                String api =
-                    '${widget._api}/$categoryName?program=${widget._programParams}';
+                String api = '${widget._api}/$categoryName';
                 Navigator.push(
                   context,
                   MaterialPageRoute(

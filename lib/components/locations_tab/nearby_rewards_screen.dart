@@ -82,7 +82,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
       double lon1 = visibleRegion.southwest.longitude;
       final response = await dio.get(
           '${widget._api}?program=${widget._programParams}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker');
-      response.data['data'].forEach((el) => _addMarker(el,tempMarkers));
+      response.data['data'].forEach((el) => _addMarker(el, tempMarkers));
       return tempMarkers;
     }
   }
