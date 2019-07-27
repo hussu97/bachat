@@ -26,22 +26,21 @@ class _LocationsTabState extends State<LocationsTab> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 20.0),
-      child: Column(
-        children: <Widget>[
-          LocationsTabTop(
-            widget._baseUrl,
-            widget._locationsApi,
-            widget._programParams,
-          ),
-          Expanded(
-            child: LocationsList(
+        child: ListView(
+          children: <Widget>[
+            LocationsTabTop(
+              widget._baseUrl,
+              widget._locationsApi,
+              widget._programParams,
+            ),
+            LocationsList(
               widget._baseUrl,
               widget._citiesApi,
               widget._programParams,
             ),
-          )
-        ],
-      ),
+          ],
+        ),
+      
       color: Styles.colorDefault,
     );
   }

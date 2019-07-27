@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 import './rewards_list.dart';
 import './styles.dart';
+import './components/loading_text.dart';
 
 class ProgramsList extends StatefulWidget {
   final String _baseUrl;
@@ -24,10 +25,7 @@ class _ProgramsListState extends State<ProgramsList> {
     final response =
         await dio.get('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
-    for (int i = 0; i < response.data['data'].length; i++) {
-      tempList.add(response.data['data'][i]);
-    }
-
+    response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
       programs.addAll(tempList);
     });
@@ -48,57 +46,63 @@ class _ProgramsListState extends State<ProgramsList> {
         String programName = programs[index]['reward_origin'];
         String programCount = programs[index]['count'].toString();
         String title = '$programName ($programCount)';
-        return new Card(
-          margin: EdgeInsets.only(
-            top: 8.0,
-            right: 5.0,
-            left: 5.0,
-            bottom: 8.0,
-          ),
-          elevation: 4.0,
-          child: ListTile(
-            leading: RewardOriginLogo(logoUrl),
-            title: Text(
-              title,
-              style: Styles.textListItemTitle,
+        if (programName != '') {
+          return new Card(
+            margin: EdgeInsets.only(
+              top: 8.0,
+              right: 5.0,
+              left: 5.0,
+              bottom: 8.0,
             ),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () {
-              String api = '${widget._api}/$programName';
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Scaffold(
-                    appBar: AppBar(
-                      iconTheme: IconThemeData(
-                        color: Styles.colorDefaultInverse,
+            elevation: 4.0,
+            child: ListTile(
+              leading: RewardOriginLogo(logoUrl),
+              title: Text(
+                title,
+                style: Styles.textListItemTitle,
+              ),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                String api = '${widget._api}/$programName';
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(
+                        iconTheme: IconThemeData(
+                          color: Styles.colorDefaultInverse,
+                        ),
+                        backgroundColor: Styles.colorDefault,
+                        title: Text(
+                          title,
+                          style: Styles.textScreenTitle,
+                        ),
                       ),
-                      backgroundColor: Styles.colorDefault,
-                      title: Text(
-                        title,
-                        style: Styles.textScreenTitle,
+                      body: RewardsList(
+                        baseUrl: widget._baseUrl,
+                        api: api,
+                        programParams: widget._programParams,
                       ),
-                    ),
-                    body: RewardsList(
-                      baseUrl: widget._baseUrl,
-                      api: api,
-                      programParams: widget._programParams,
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
+                );
+              },
+            ),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget child = LoadingText('Loading programs...', Icons.landscape);
+    if (programs.isNotEmpty) child = _buildList();
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0),
-      child: _buildList(),
+      child: child,
       color: Styles.colorDefault,
     );
   }

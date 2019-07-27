@@ -1,8 +1,11 @@
+import 'package:bachat/components/icon_builder_color.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import '../../rewards_list.dart';
 import '../../styles.dart';
+import '../loading_text.dart';
+import '../../constants/icons.dart';
 
 class LocationsList extends StatefulWidget {
   final String _baseUrl;
@@ -18,15 +21,13 @@ class LocationsList extends StatefulWidget {
 class _LocationsListState extends State<LocationsList> {
   List cities = new List();
   final Dio dio = new Dio();
+  final Map<String, List<dynamic>> citiesConstants = IconConstants.cityIcons;
 
   void _loadData() async {
     final response =
         await dio.get('${widget._api}?program=${widget._programParams}');
-    print('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
-    for (int i = 0; i < response.data['data'].length; i++) {
-      tempList.add(response.data['data'][i]);
-    }
+    response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
       cities.addAll(tempList);
     });
@@ -39,16 +40,15 @@ class _LocationsListState extends State<LocationsList> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: cities.length,
-      itemBuilder: (BuildContext context, int index) {
-        String cityName = cities[index]['city'];
-        String cityCount = cities[index]['count'].toString();
-        String title = '$cityName ($cityCount)';
-        if (cityName != '') {
-          return new Card(
+  List<Widget> _buildList() {
+    List<Widget> widgets = new List();
+    for (var city in cities) {
+      String cityName = city['city'];
+      String cityCount = city['count'].toString();
+      String title = '$cityName ($cityCount)';
+      if (cityName != '') {
+        widgets.add(
+          new Card(
             margin: EdgeInsets.only(
               top: 8.0,
               right: 5.0,
@@ -57,14 +57,14 @@ class _LocationsListState extends State<LocationsList> {
             ),
             elevation: 4.0,
             child: ListTile(
+              leading: IconBuilderColor(citiesConstants[cityName][0], citiesConstants[cityName][1]),
               title: Text(
                 title,
                 style: Styles.textListItemTitle,
               ),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
-                String api =
-                    '${widget._api}/$cityName?program=${widget._programParams}';
+                String api = '${widget._api}/$cityName';
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -89,11 +89,19 @@ class _LocationsListState extends State<LocationsList> {
                 );
               },
             ),
-          );
-        } else {
-          return new SizedBox.shrink();
-        }
-      },
-    );
+          ),
+        );
+      } else {
+        widgets.add(SizedBox.shrink());
+      }
+    }
+    return widgets;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> child = [LoadingText('Loading cities...', Icons.landscape)];
+    if (cities.isNotEmpty) child = _buildList();
+    return Column(children: child);
   }
 }

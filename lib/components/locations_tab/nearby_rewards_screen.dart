@@ -82,9 +82,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
       double lon1 = visibleRegion.southwest.longitude;
       final response = await dio.get(
           '${widget._api}?program=${widget._programParams}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker');
-      for (var i in response.data['data']) {
-        _addMarker(i, tempMarkers);
-      }
+      response.data['data'].forEach((el) => _addMarker(el,tempMarkers));
       return tempMarkers;
     }
   }
@@ -92,7 +90,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
   void _checkLocationPermission() async {
     PermissionStatus permission =
         await LocationPermissions().checkPermissionStatus();
-    print(permission);
     bool isLocationAvailable;
     if (permission != PermissionStatus.granted) {
       isLocationAvailable = await LocationPermissions().requestPermissions(
@@ -131,9 +128,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
       body: Column(
         children: <Widget>[
           GMapsWidget(
-            widget._baseUrl,
-            widget._api,
-            widget._programParams,
             _isLocationAvailable,
             loadLocationData,
             markers,

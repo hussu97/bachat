@@ -45,9 +45,7 @@ class Reward {
 
   factory Reward.fromJson(Map<String, dynamic> json) {
     List<Location> l = new List();
-    for (var i in json['locations']) {
-      l.add(Location.fromJson(i));
-    }
+    json['locations'].forEach((location) => l.add(Location.fromJson(location)));
     return Reward(
       companyName: json['company_name'],
       backgroundImage: json['background_image'],

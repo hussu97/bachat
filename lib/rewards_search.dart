@@ -7,7 +7,6 @@ class DataSearch extends SearchDelegate<String> {
 
   DataSearch(List<String> list) {
     this._list = list.toSet().toList();
-    this._list.sort();
     this._cachedList = this._list.sublist(0, 10);
   }
 

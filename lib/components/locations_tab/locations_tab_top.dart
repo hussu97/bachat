@@ -1,7 +1,6 @@
 import 'package:bachat/components/locations_tab/nearby_rewards_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:location_permissions/location_permissions.dart';
 
 import '../../styles.dart';
 
@@ -90,9 +89,9 @@ class LocationsTabTop extends StatelessWidget {
           ),
         ]),
         Padding(
-          padding: EdgeInsets.only(bottom: 10.0),
+          padding: EdgeInsets.only(bottom: 30.0),
           child: Text(
-            'Find rewards based on city',
+            'Find rewards based on emirate',
             textAlign: TextAlign.center,
             style: Styles.textLocationTabTitle,
           ),

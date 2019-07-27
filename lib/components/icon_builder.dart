@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 
-class IconBuilder extends StatelessWidget {
-  final IconData iconData;
+import './icon_builder_color.dart';
 
-  IconBuilder(this.iconData);
+class IconBuilder extends StatelessWidget {
+  final IconData _iconData;
+
+  IconBuilder(this._iconData);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.0),
-      child: Icon(
-        iconData,
-        color: Color.fromARGB(0xB3, 0, 0, 0),
-      ),
-    );
+    return IconBuilderColor(_iconData, Color.fromARGB(0xB3, 0, 0, 0));
   }
 }

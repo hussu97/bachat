@@ -115,9 +115,7 @@ class RewardDetailsContentBottom extends StatelessWidget {
   List<Widget> _buildAddressRows(List<Location> locations) {
     if (locations.length > 0) {
       List<Widget> l = new List();
-      for (var i in locations) {
-        l.add(AddressRow(i, FontAwesomeIcons.locationArrow));
-      }
+      locations.forEach((loc) => l.add(AddressRow(loc, FontAwesomeIcons.locationArrow)));
       return l;
     } else {
       return [SizedBox.shrink()];

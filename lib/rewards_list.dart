@@ -31,10 +31,7 @@ class _RewardsListState extends State<RewardsList> {
     final response = await dio.get(moreDataUrl);
     List tempList = new List();
     moreDataUrl = response.data['next'];
-    for (int i = 0; i < response.data['data'].length; i++) {
-      tempList.add(response.data['data'][i]);
-    }
-
+    response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
       isLoading = false;
       rewards.addAll(tempList);

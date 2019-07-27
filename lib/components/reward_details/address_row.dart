@@ -7,7 +7,7 @@ import '../../models/location.dart';
 class AddressRow extends StatelessWidget {
   final Location _location;
   final IconData _iconData;
-  final String MAP_LINK = 'http://www.google.com/maps/place/';
+  final String _mapLink = 'http://www.google.com/maps/place/';
 
   AddressRow(this._location, this._iconData);
 
@@ -24,7 +24,7 @@ class AddressRow extends StatelessWidget {
                 color: Styles.colorGreen,
               ),
               onPressed: () async {
-                String link = '$MAP_LINK${_location.lat},${_location.lon}';
+                String link = '$_mapLink${_location.lat},${_location.lon}';
                 if (await canLaunch(link)) {
                   await launch(link);
                 }

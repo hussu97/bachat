@@ -30,11 +30,11 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tempList = new List();
     List<bool> tempList2 = new List();
-    for (int i = 0; i < response.data['data'].length; i++) {
-      String rewardOrigin = response.data['data'][i]['reward_origin'];
+    response.data['data'].forEach((el) {
+      String rewardOrigin = el['reward_origin'];
       tempList.add(rewardOrigin);
       tempList2.add(prefs.getBool(rewardOrigin) ?? true);
-    }
+    });
     setState(() {
       programs.addAll(tempList);
       isEnabled.addAll(tempList2);

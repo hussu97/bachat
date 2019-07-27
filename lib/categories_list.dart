@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import './rewards_list.dart';
 import './styles.dart';
+import './components/loading_text.dart';
 
 class CategoriesList extends StatefulWidget {
   final String _baseUrl;
@@ -23,10 +24,7 @@ class _CategoriesListState extends State<CategoriesList> {
     final response =
         await dio.get('${widget._api}?program=${widget._programParams}');
     List tempList = new List();
-    for (int i = 0; i < response.data['data'].length; i++) {
-      tempList.add(response.data['data'][i]);
-    }
-    tempList.sort((a, b) => a['offer_type'].compareTo(b['offer_type']));
+    response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
       categories.addAll(tempList);
     });
@@ -98,9 +96,11 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
+    Widget child = LoadingText('Loading categories...', Icons.landscape);
+    if (categories.isNotEmpty) child = _buildList();
     return Container(
       padding: EdgeInsets.only(left: 5.0, right: 5.0, top: 10.0, bottom: 12.0),
-      child: _buildList(),
+      child: child,
       color: Styles.colorDefault,
     );
   }

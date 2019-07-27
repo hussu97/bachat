@@ -9,7 +9,6 @@ import './categories_list.dart';
 import './locations_tab.dart';
 import './styles.dart';
 import './settings/settings.dart';
-import './constants/constants.dart';
 
 // void mainDelegate() => runApp(MyApp());
 void main() => runApp(MyApp());
@@ -36,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static String base = 'http://192.168.0.140:3000';
+  static String base = 'http://development.2shkuzu3ua.us-east-1.elasticbeanstalk.com';
   static String latestApiUrl = '/api/v1';
   final String baseUrl = '$base$latestApiUrl';
   final String rewardsEndpoint = '/rewards';
@@ -78,12 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
     programParams = '';
     final response = await dio.get(programsEndpoint);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    for (var i in response.data['data']) {
-      if (prefs.getBool(i['reward_origin']) ?? true) {
-        programParams += i['reward_origin'];
+    response.data['data'].forEach((el) {
+      if (prefs.getBool(el['reward_origin']) ?? true) {
+        programParams += el['reward_origin'];
         programParams += ',';
       }
-    }
+    });
     programParams = programParams.substring(0, programParams.length - 1);
   }
 
@@ -92,9 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
     companyNames.clear();
     final response =
         await dio.get('$companyNamesEndpoint?program=$programParams');
-    for (int i = 0; i < response.data['data'].length; i++) {
-      companyNames.add(response.data['data'][i]);
-    }
+    response.data['data'].forEach((el) => companyNames.add(el));
   }
 
   @override

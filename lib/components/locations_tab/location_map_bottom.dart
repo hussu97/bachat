@@ -3,11 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
-import 'package:progress_indicators/progress_indicators.dart';
 
 import '../../styles.dart';
 import './nearby_location_list_item.dart';
 import '../../models/reward.dart';
+import '../loading_text.dart';
 
 class LocationMapBottom extends StatefulWidget {
   final bool _isLocationAvailable;
@@ -53,7 +53,6 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
   }
 
   void _initLocationStream() {
-    print('yoooo');
     LocationOptions locationOptions =
         LocationOptions(accuracy: LocationAccuracy.best, distanceFilter: 40);
     subscription = geolocator.getPositionStream(locationOptions).listen(
@@ -64,9 +63,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
         });
         _loadData(position.latitude, position.longitude);
       }
-      print(position.latitude.toString() + ' ' + position.longitude.toString());
     }, onDone: () {
-      print('we gucci');
     }, onError: (error) {
       print('error occured $error');
     });
@@ -81,9 +78,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
     final response = await dio.get(moreDataUrl);
     List tempList = new List();
     moreDataUrl = response.data['next'];
-    for (int i = 0; i < response.data['data'].length; i++) {
-      tempList.add(response.data['data'][i]);
-    }
+    response.data['data'].forEach((el) => tempList.add(el));
 
     setState(() {
       isLoading = false;
@@ -111,7 +106,6 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
 
   Widget _buildList() {
     return ListView.builder(
-      //+1 for progressbar
       itemCount: nearbyRewards.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index == nearbyRewards.length && moreDataUrl == '') {
@@ -169,23 +163,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Visibility(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FadingText(
-                'Searching for nearby offers...',
-                style: Styles.textScreenTitle,
-              ),
-              SizedBox(height: 20.0),
-              GlowingProgressIndicator(
-                child: Icon(
-                  Icons.laptop_windows,
-                ),
-              )
-            ],
-          ),
-        ),
+        child: LoadingText('Searching for nearby offers...', Icons.landscape),
         replacement: Padding(
           padding: EdgeInsets.all(10.0),
           child: _loadWidget(),

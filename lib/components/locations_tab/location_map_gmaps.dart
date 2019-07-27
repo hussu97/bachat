@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:dio/dio.dart';
 
 class GMapsWidget extends StatefulWidget {
-  final String _baseUrl;
-  final String _api;
-  final String _programParams;
   bool _isLocationAvailable;
   final Function loadLocationData;
   Map<MarkerId, Marker> markers;
 
-  GMapsWidget(this._baseUrl, this._api, this._programParams,
-      this._isLocationAvailable, this.loadLocationData, this.markers);
+  GMapsWidget(this._isLocationAvailable, this.loadLocationData, this.markers);
 
   @override
   _GMapsWidgetState createState() => _GMapsWidgetState();
@@ -21,7 +16,6 @@ class GMapsWidget extends StatefulWidget {
 class _GMapsWidgetState extends State<GMapsWidget> {
   GoogleMapController controller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  Dio dio = new Dio();
   MarkerId selectedMarker;
   final double _initialLat = 25.3150587;
   final double _initialLon = 55.3696635;
@@ -38,7 +32,6 @@ class _GMapsWidgetState extends State<GMapsWidget> {
     LatLngBounds visibleRegion = await this.controller.getVisibleRegion();
     setState(() {
       _visibleRegion = visibleRegion;
-      print('gonna go to function now');
       widget.loadLocationData(_visibleRegion).then((val) {
         setState(() {
           markers.clear();
@@ -67,7 +60,6 @@ class _GMapsWidgetState extends State<GMapsWidget> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     super.initState();
   }
 
