@@ -1,12 +1,12 @@
 class RewardsProgram {
-  final String slug;
+  final String name;
   final String description;
   final String webLink;
   final String appStoreLink;
   final String playStoreLink;
 
   RewardsProgram({
-    this.slug,
+    this.name,
     this.description,
     this.webLink,
     this.appStoreLink,
@@ -15,7 +15,7 @@ class RewardsProgram {
 
   factory RewardsProgram.fromJson(Map<String, dynamic> json) {
     return RewardsProgram(
-      slug: json['slug'],
+      name: json['name'],
       description: json['description'],
       webLink: json['reward_origin_link'],
       appStoreLink: json['app_store_link'],

@@ -42,7 +42,6 @@ class _ProgramsListState extends State<ProgramsList> {
 
   Widget _programListScaffold(
     String title,
-    String programName,
     String api,
     String logoUrl,
     dynamic json,
@@ -61,7 +60,6 @@ class _ProgramsListState extends State<ProgramsList> {
       body: ListView(
         children: <Widget>[
           ProgramInfo(
-            programName,
             RewardsProgram.fromJson(json),
             logoUrl,
           ),
@@ -106,7 +104,6 @@ class _ProgramsListState extends State<ProgramsList> {
                   MaterialPageRoute(
                     builder: (context) => _programListScaffold(
                       title,
-                      programName,
                       api,
                       logoUrl,
                       programs[index],

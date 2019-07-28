@@ -8,11 +8,9 @@ import '../styles.dart';
 class ProgramInfo extends StatelessWidget {
   final RewardsProgram _program;
   final String _programLogoUrl;
-  final String _programName;
   final double _height = 100.0;
 
   ProgramInfo(
-    this._programName,
     this._program,
     this._programLogoUrl,
   );
