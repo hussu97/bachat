@@ -94,14 +94,12 @@ class _RewardsListState extends State<RewardsList> {
         }
       },
       controller: _scrollController,
+      shrinkWrap: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _buildList(),
-      color: Styles.colorDefault,
-    );
+    return _buildList();
   }
 }

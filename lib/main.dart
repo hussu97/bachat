@@ -35,7 +35,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static String base = 'http://development.2shkuzu3ua.us-east-1.elasticbeanstalk.com';
+  static String base =
+      'http://development.2shkuzu3ua.us-east-1.elasticbeanstalk.com';
   static String latestApiUrl = '/api/v1';
   final String baseUrl = '$base$latestApiUrl';
   final String rewardsEndpoint = '/rewards';
@@ -209,11 +210,14 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: TabBarView(
           children: [
-            RewardsList(
-              baseUrl: baseUrl,
-              api: rewardsEndpoint,
-              programParams: programParams,
-              addRewardsCount: addAllRewardsCount,
+            Container(
+              child: RewardsList(
+                baseUrl: baseUrl,
+                api: rewardsEndpoint,
+                programParams: programParams,
+                addRewardsCount: addAllRewardsCount,
+              ),
+              color: Styles.colorDefault,
             ),
             ProgramsList(
               baseUrl,

@@ -1,10 +1,12 @@
 import 'package:bachat/components/reward_origin_logo.dart';
+import 'package:bachat/models/program.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import './rewards_list.dart';
 import './styles.dart';
 import './components/loading_text.dart';
+import './components/program_info.dart';
 
 class ProgramsList extends StatefulWidget {
   final String _baseUrl;
@@ -38,6 +40,41 @@ class _ProgramsListState extends State<ProgramsList> {
     super.initState();
   }
 
+  Widget _programListScaffold(
+    String title,
+    String programName,
+    String api,
+    String logoUrl,
+    dynamic json,
+  ) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Styles.colorDefaultInverse,
+        ),
+        backgroundColor: Styles.colorDefault,
+        title: Text(
+          title,
+          style: Styles.textScreenTitle,
+        ),
+      ),
+      body: ListView(
+        children: <Widget>[
+          ProgramInfo(
+            programName,
+            RewardsProgram.fromJson(json),
+            logoUrl,
+          ),
+          RewardsList(
+            baseUrl: widget._baseUrl,
+            api: api,
+            programParams: widget._programParams,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildList() {
     return ListView.builder(
       itemCount: programs.length,
@@ -67,22 +104,12 @@ class _ProgramsListState extends State<ProgramsList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Scaffold(
-                      appBar: AppBar(
-                        iconTheme: IconThemeData(
-                          color: Styles.colorDefaultInverse,
-                        ),
-                        backgroundColor: Styles.colorDefault,
-                        title: Text(
-                          title,
-                          style: Styles.textScreenTitle,
-                        ),
-                      ),
-                      body: RewardsList(
-                        baseUrl: widget._baseUrl,
-                        api: api,
-                        programParams: widget._programParams,
-                      ),
+                    builder: (context) => _programListScaffold(
+                      title,
+                      programName,
+                      api,
+                      logoUrl,
+                      programs[index],
                     ),
                   ),
                 );

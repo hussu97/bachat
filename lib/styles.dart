@@ -116,6 +116,13 @@ class Styles {
     color: colorDefaultInverse,
     fontWeight: _fontWeightBold,
   );
+  static final textProgramInfo = TextStyle(
+    fontFamily: _fontNameTitle,
+    fontSize: _textSizeSmall,
+    color: colorDefaultInverse,
+    fontWeight: _fontWeightLight,
+    height: 1.3
+  );
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }

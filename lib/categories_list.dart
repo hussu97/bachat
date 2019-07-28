@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import './rewards_list.dart';
 import './styles.dart';
 import './components/loading_text.dart';
+import './components/icon_builder_color.dart';
+import './constants/icons.dart';
 
 class CategoriesList extends StatefulWidget {
   final String _baseUrl;
@@ -19,6 +21,8 @@ class CategoriesList extends StatefulWidget {
 class _CategoriesListState extends State<CategoriesList> {
   List categories = new List();
   final Dio dio = new Dio();
+  final Map<String, List<dynamic>> categoriesIconsConstants =
+      IconConstants.categoryIcons;
 
   void _loadData() async {
     final response =
@@ -44,6 +48,16 @@ class _CategoriesListState extends State<CategoriesList> {
         String categoryName = categories[index]['offer_type'];
         String categoryCount = categories[index]['count'].toString();
         String title = '$categoryName ($categoryCount)';
+        IconData icon;
+        Color color;
+        try {
+          List info = categoriesIconsConstants[categoryName];
+          icon = info[0];
+          color = info[1];
+        } catch (e) {
+          icon = Icons.location_city;
+          color = Styles.colorTertiary;
+        }
         if (categoryName != '') {
           return new Card(
             margin: EdgeInsets.only(
@@ -54,6 +68,7 @@ class _CategoriesListState extends State<CategoriesList> {
             ),
             elevation: 4.0,
             child: ListTile(
+              leading: IconBuilderColor(icon, color),
               title: Text(
                 title,
                 style: Styles.textListItemTitle,
@@ -75,10 +90,13 @@ class _CategoriesListState extends State<CategoriesList> {
                           style: Styles.textScreenTitle,
                         ),
                       ),
-                      body: RewardsList(
-                        baseUrl: widget._baseUrl,
-                        api: api,
-                        programParams: widget._programParams,
+                      body: Container(
+                        child: RewardsList(
+                          baseUrl: widget._baseUrl,
+                          api: api,
+                          programParams: widget._programParams,
+                        ),
+                        color: Styles.colorDefault,
                       ),
                     ),
                   ),

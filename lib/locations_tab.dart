@@ -40,7 +40,6 @@ class _LocationsTabState extends State<LocationsTab> {
             ),
           ],
         ),
-      
       color: Styles.colorDefault,
     );
   }

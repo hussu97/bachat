@@ -21,7 +21,7 @@ class LocationsList extends StatefulWidget {
 class _LocationsListState extends State<LocationsList> {
   List cities = new List();
   final Dio dio = new Dio();
-  final Map<String, List<dynamic>> citiesConstants = IconConstants.cityIcons;
+  final Map<String, List<dynamic>> citiesIconsConstants = IconConstants.cityIcons;
 
   void _loadData() async {
     final response =
@@ -46,6 +46,16 @@ class _LocationsListState extends State<LocationsList> {
       String cityName = city['city'];
       String cityCount = city['count'].toString();
       String title = '$cityName ($cityCount)';
+      IconData icon;
+      Color color;
+      try {
+          List info = citiesIconsConstants[cityName];
+          icon = info[0];
+          color = info[1];
+        } catch (e) {
+          icon = Icons.location_city;
+          color = Styles.colorTertiary;
+        }
       if (cityName != '') {
         widgets.add(
           new Card(
@@ -57,7 +67,7 @@ class _LocationsListState extends State<LocationsList> {
             ),
             elevation: 4.0,
             child: ListTile(
-              leading: IconBuilderColor(citiesConstants[cityName][0], citiesConstants[cityName][1]),
+              leading: IconBuilderColor(icon, color),
               title: Text(
                 title,
                 style: Styles.textListItemTitle,
