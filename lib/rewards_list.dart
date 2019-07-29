@@ -4,12 +4,20 @@ import 'package:dio/dio.dart';
 
 import './models/reward.dart';
 import './components/reward_list_item/reward_list_item.dart';
+
 class RewardsList extends StatefulWidget {
   final String api;
   final String baseUrl;
   final String programParams;
+  final ScrollController scrollController;
   final Function addRewardsCount;
-  RewardsList({this.baseUrl, this.api,this.programParams, this.addRewardsCount});
+  RewardsList({
+    this.baseUrl,
+    this.api,
+    this.programParams,
+    this.addRewardsCount,
+    this.scrollController,
+  });
 
   @override
   _RewardsListState createState() => _RewardsListState();
@@ -35,7 +43,7 @@ class _RewardsListState extends State<RewardsList> {
     setState(() {
       isLoading = false;
       rewards.addAll(tempList);
-      if(widget.addRewardsCount!=null)
+      if (widget.addRewardsCount != null)
         widget.addRewardsCount(response.data['count']);
     });
   }
@@ -46,12 +54,25 @@ class _RewardsListState extends State<RewardsList> {
     moreDataUrl = '${widget.api}?program=${widget.programParams}';
     this._getMoreData();
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getMoreData();
-      }
-    });
+    if (widget.scrollController == null) {
+      _scrollController.addListener(
+        () {
+          if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
+            _getMoreData();
+          }
+        },
+      );
+    } else {
+      widget.scrollController.addListener(
+        () {
+          if (widget.scrollController.position.pixels ==
+              widget.scrollController.position.maxScrollExtent) {
+            _getMoreData();
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -77,7 +98,7 @@ class _RewardsListState extends State<RewardsList> {
       //+1 for progressbar
       itemCount: rewards.length + 1,
       itemBuilder: (BuildContext context, int index) {
-        if (index == rewards.length && moreDataUrl == ''){
+        if (index == rewards.length && moreDataUrl == '') {
           return Padding(
             padding: EdgeInsets.all(20.0),
             child: Text(

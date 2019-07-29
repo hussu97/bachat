@@ -54,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'Category',
   ];
   final List<String> companyNames = [];
+  final Set<String> cachedSearches = new Set();
 
   List<Widget> _buildTabList() {
     List<Widget> res = new List<Widget>();
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future _loadProgramFilterData() async {
+  Future _loadUserData() async {
     programParams = '';
     final response = await dio.get(programsEndpoint);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -84,11 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
         programParams += ',';
       }
     });
+    cachedSearches.clear();
+    cachedSearches.addAll(prefs.getStringList("search"));
     programParams = programParams.substring(0, programParams.length - 1);
   }
 
   Future _loadSearchData() async {
-    await this._loadProgramFilterData();
+    await this._loadUserData();
     companyNames.clear();
     final response =
         await dio.get('$companyNamesEndpoint?program=$programParams');
@@ -174,10 +177,20 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Future<String> result = showSearch(
                   context: context,
-                  delegate: DataSearch(companyNames),
+                  delegate: DataSearch(
+                    companyNames,
+                    cachedSearches.toList(),
+                  ),
                 );
                 result.then((res) {
-                  if (res != null) _showSearchResultsScreen(res);
+                  if (res != null) {
+                    _showSearchResultsScreen(res);
+                    cachedSearches.add(res);
+                    SharedPreferences.getInstance().then((prefs){
+                      prefs.setStringList("search", cachedSearches.toList()).catchError((onError)=>print('Error $onError'));
+                    });
+                  }
+                  ;
                 });
               },
             ),

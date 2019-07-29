@@ -5,10 +5,7 @@ class DataSearch extends SearchDelegate<String> {
   List<String> _list;
   List<String> _cachedList;
 
-  DataSearch(List<String> list) {
-    this._list = list.toSet().toList();
-    this._cachedList = this._list.sublist(0, 10);
-  }
+  DataSearch(this._list, this._cachedList);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -18,9 +15,7 @@ class DataSearch extends SearchDelegate<String> {
           Icons.clear,
           color: Styles.colorDefaultInverse,
         ),
-        onPressed: () {
-          query = '';
-        },
+        onPressed: () => {query = ''},
       )
     ];
   }
@@ -49,30 +44,52 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
         ? _cachedList
-        : _list
-            .where((p) => p.toLowerCase().startsWith(query.toLowerCase()))
-            .toList();
-
+        : _list.where(
+            (p) {
+              RegExp regExp;
+              if (query.length < 3) {
+                regExp = new RegExp("^${query.toLowerCase()}");
+                return regExp.hasMatch(p.toLowerCase());
+              } else {
+                regExp = new RegExp("${query.toLowerCase()}");
+                return regExp.hasMatch(p.toLowerCase());
+              }
+            },
+          ).toList();
     return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          query = suggestionList[index];
-          showResults(context);
-        },
-        leading: Icon(Icons.local_offer,),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionList[index].substring(0, query.length),
-            style: Styles.textSearchFocus,
-            children: [
-              TextSpan(
-                text: suggestionList[index].substring(query.length),
-                style: Styles.textSearchUnfocus,
-              ),
-            ],
+      itemBuilder: (context, index) {
+        int startingIdx = suggestionList[index]
+            .toLowerCase()
+            .indexOf(new RegExp("${query.toLowerCase()}"));
+        int endIdx = startingIdx + query.length;
+        return ListTile(
+          onTap: () {
+            query = suggestionList[index];
+            showResults(context);
+          },
+          leading: Icon(
+            query.isEmpty ? Icons.history : Icons.local_offer,
           ),
-        ),
-      ),
+          title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: suggestionList[index].substring(0, startingIdx),
+                  style: Styles.textSearchUnfocus,
+                ),
+                TextSpan(
+                  text: suggestionList[index].substring(startingIdx, endIdx),
+                  style: Styles.textSearchFocus,
+                ),
+                TextSpan(
+                  text: suggestionList[index].substring(endIdx),
+                  style: Styles.textSearchUnfocus,
+                )
+              ],
+            ),
+          ),
+        );
+      },
       itemCount: suggestionList.length,
     );
   }

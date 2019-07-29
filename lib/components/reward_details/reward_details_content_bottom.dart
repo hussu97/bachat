@@ -112,13 +112,23 @@ class RewardDetailsContentBottom extends StatelessWidget {
     }
   }
 
-  List<Widget> _buildAddressRows(List<Location> locations) {
-    if (locations.length > 0) {
+  Widget _buildAddressRows(List<Location> locations) {
+    if (locations.length == 1) {
+      return AddressRow(locations[0], FontAwesomeIcons.locationArrow);
+    } else if (locations.length > 1) {
       List<Widget> l = new List();
-      locations.forEach((loc) => l.add(AddressRow(loc, FontAwesomeIcons.locationArrow)));
-      return l;
+      locations.forEach(
+          (loc) => l.add(AddressRow(loc, FontAwesomeIcons.locationArrow)));
+      return ExpansionTile(
+        title: Text(
+          'Locations (${locations.length})',
+          style: Styles.textDetailsPageSubtitle,
+          textAlign: TextAlign.center,
+        ),
+        children: l,
+      );
     } else {
-      return [SizedBox.shrink()];
+      return SizedBox.shrink();
     }
   }
 
@@ -136,9 +146,7 @@ class RewardDetailsContentBottom extends StatelessWidget {
       ColumnWithHeadingAndText(
           'Terms & Conditions', _reward.termsAndConditions),
       _buildLinksRow(_reward.link, _reward.website),
-      Column(
-        children: _buildAddressRows(_reward.locations),
-      ),
+      _buildAddressRows(_reward.locations),
     ]);
   }
 }

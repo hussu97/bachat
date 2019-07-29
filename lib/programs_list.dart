@@ -22,6 +22,7 @@ class ProgramsList extends StatefulWidget {
 class _ProgramsListState extends State<ProgramsList> {
   List programs = new List();
   final Dio dio = new Dio();
+  final ScrollController _scrollController = new ScrollController();
 
   void _loadData() async {
     final response =
@@ -67,8 +68,11 @@ class _ProgramsListState extends State<ProgramsList> {
             baseUrl: widget._baseUrl,
             api: api,
             programParams: widget._programParams,
+            scrollController: _scrollController,
           ),
+          
         ],
+        controller: _scrollController,
       ),
     );
   }
