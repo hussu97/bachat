@@ -1,3 +1,4 @@
+import 'package:bachat/Http_provider.dart';
 import 'package:bachat/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -28,7 +29,8 @@ class _RewardsListState extends State<RewardsList> {
   String moreDataUrl;
   bool isLoading = false;
   List rewards = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
+  final CancelToken token = new CancelToken();
 
   void _getMoreData() async {
     if (!isLoading) {
@@ -36,7 +38,12 @@ class _RewardsListState extends State<RewardsList> {
         isLoading = true;
       });
     }
-    final response = await dio.get(moreDataUrl).catchError((e) {
+    final response = await http
+        .get(
+      api: moreDataUrl,
+      token: token,
+    )
+        .catchError((e) {
       setState(() {
         moreDataUrl = '';
       });
@@ -56,7 +63,6 @@ class _RewardsListState extends State<RewardsList> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget.baseUrl;
     moreDataUrl = '${widget.api}?program=${widget.programParams}';
     this._getMoreData();
     super.initState();
@@ -83,7 +89,8 @@ class _RewardsListState extends State<RewardsList> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    if (_scrollController != null) _scrollController.dispose();
+    http.cancel(token);
     super.dispose();
   }
 

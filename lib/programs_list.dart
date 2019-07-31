@@ -7,6 +7,7 @@ import './rewards_list.dart';
 import './styles.dart';
 import './components/loading_text.dart';
 import './components/program_info.dart';
+import './Http_provider.dart';
 
 class ProgramsList extends StatefulWidget {
   final String _baseUrl;
@@ -21,12 +22,13 @@ class ProgramsList extends StatefulWidget {
 
 class _ProgramsListState extends State<ProgramsList> {
   List programs = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
+  final CancelToken token = new CancelToken();
   final ScrollController _scrollController = new ScrollController();
 
   void _loadData() async {
     final response =
-        await dio.get('${widget._api}?program=${widget._programParams}');
+        await http.get(api: '${widget._api}?program=${widget._programParams}',token: token);
     List tempList = new List();
     response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
@@ -36,9 +38,15 @@ class _ProgramsListState extends State<ProgramsList> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if(_scrollController != null) _scrollController.dispose();
+    http.cancel(token);
+    super.dispose();
   }
 
   Widget _programListScaffold(

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 import '../styles.dart';
+import '../Http_provider.dart';
 
 class RewardsProgramsSettings extends StatefulWidget {
   final Function _apiUpdateCallback;
@@ -23,10 +24,14 @@ class RewardsProgramsSettings extends StatefulWidget {
 class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   List programs = new List();
   List isEnabled = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
+  final CancelToken token = new CancelToken();
 
   void _loadData() async {
-    final response = await dio.get(widget._programsApi);
+    final response = await http.get(
+      api: widget._programsApi,
+      token: token,
+    );
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tempList = new List();
     List<bool> tempList2 = new List();
@@ -49,15 +54,21 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
         programParameter += '${programs[i]},';
       }
     }
-    programParameter = programParameter.substring(0, programParameter.length - 1);
+    programParameter =
+        programParameter.substring(0, programParameter.length - 1);
     widget._apiUpdateCallback(programParameter);
   }
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    http.cancel(token);
+    super.dispose();
   }
 
   Widget _buildList() {

@@ -8,6 +8,7 @@ import '../../styles.dart';
 import './nearby_location_list_item.dart';
 import '../../models/reward.dart';
 import '../loading_text.dart';
+import '../../Http_provider.dart';
 
 class LocationMapBottom extends StatefulWidget {
   final bool _isLocationAvailable;
@@ -27,15 +28,15 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
   Geolocator geolocator = Geolocator();
   List nearbyRewards = new List();
   String moreDataUrl;
-  Dio dio = new Dio();
+  HttpProvider http = HttpProvider.http;
   bool isLoading = false;
   bool isSearchingWidgetVisible = true;
   StreamSubscription<Position> subscription;
   ScrollController _scrollController = new ScrollController();
+  CancelToken token = new CancelToken();
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     _initLocationStream();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -49,6 +50,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
   @override
   void dispose() {
     if (subscription != null) subscription.cancel();
+    http.cancel(token);
     super.dispose();
   }
 
@@ -75,7 +77,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
         isLoading = true;
       });
     }
-    final response = await dio.get(moreDataUrl);
+    final response = await http.get(api: moreDataUrl);
     List tempList = new List();
     moreDataUrl = response.data['next'];
     response.data['data'].forEach((el) => tempList.add(el));

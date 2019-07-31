@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "784040019732",
+    "firebase_url": "https://bachat-api-1563875124035.firebaseio.com",
+    "project_id": "bachat-api-1563875124035",
+    "storage_bucket": "bachat-api-1563875124035.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784040019732:android:743cc50f2558cbd7",
+        "android_client_info": {
+          "package_name": "com.example.demo_project_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784040019732-4edtn0lk0599jt9t1j9isdibhv6lj5c1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA4U9WgvmIWV25FVBYg8yxtPzcHnbdOsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784040019732-4edtn0lk0599jt9t1j9isdibhv6lj5c1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
