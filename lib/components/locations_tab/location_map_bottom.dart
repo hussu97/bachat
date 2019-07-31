@@ -13,11 +13,10 @@ import '../../Http_provider.dart';
 class LocationMapBottom extends StatefulWidget {
   final bool _isLocationAvailable;
   final Function _checkLocationPermission;
-  final String _baseUrl;
   final String _api;
   final String _programParams;
 
-  LocationMapBottom(this._baseUrl, this._api, this._programParams,
+  LocationMapBottom(this._api, this._programParams,
       this._isLocationAvailable, this._checkLocationPermission);
 
   @override

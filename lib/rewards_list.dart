@@ -8,12 +8,10 @@ import './components/reward_list_item/reward_list_item.dart';
 
 class RewardsList extends StatefulWidget {
   final String api;
-  final String baseUrl;
   String programParams;
   final ScrollController scrollController;
   final Function addRewardsCount;
   RewardsList({
-    this.baseUrl,
     this.api,
     this.programParams,
     this.addRewardsCount,

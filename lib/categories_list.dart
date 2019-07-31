@@ -9,11 +9,10 @@ import './constants/icons.dart';
 import './Http_provider.dart';
 
 class CategoriesList extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
   String _programParams;
 
-  CategoriesList(this._baseUrl, this._api, this._programParams);
+  CategoriesList(this._api, this._programParams);
 
   @override
   _CategoriesListState createState() => _CategoriesListState();
@@ -99,7 +98,6 @@ class _CategoriesListState extends State<CategoriesList> {
                       ),
                       body: Container(
                         child: RewardsList(
-                          baseUrl: widget._baseUrl,
                           api: api,
                           programParams: widget._programParams,
                         ),

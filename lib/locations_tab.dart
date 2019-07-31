@@ -5,13 +5,11 @@ import './components/locations_tab/locations_list.dart';
 import './components/locations_tab/locations_tab_top.dart';
 
 class LocationsTab extends StatefulWidget {
-  final String _baseUrl;
   final String _citiesApi;
   final String _locationsApi;
   String _programParams;
 
   LocationsTab(
-    this._baseUrl,
     this._citiesApi,
     this._locationsApi,
     this._programParams,
@@ -29,12 +27,10 @@ class _LocationsTabState extends State<LocationsTab> {
         child: ListView(
           children: <Widget>[
             LocationsTabTop(
-              widget._baseUrl,
               widget._locationsApi,
               widget._programParams,
             ),
             LocationsList(
-              widget._baseUrl,
               widget._citiesApi,
               widget._programParams,
             ),

@@ -14,6 +14,8 @@ class HttpProvider {
     return _dio;
   }
 
+  String get programsEndpoint => '/programs';
+
   initHttp(baseUrl) {
     final Dio d = dio;
     d.options.baseUrl = baseUrl;

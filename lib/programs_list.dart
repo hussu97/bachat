@@ -10,11 +10,10 @@ import './components/program_info.dart';
 import './Http_provider.dart';
 
 class ProgramsList extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
   String _programParams;
 
-  ProgramsList(this._baseUrl, this._api, this._programParams);
+  ProgramsList(this._api, this._programParams);
 
   @override
   _ProgramsListState createState() => _ProgramsListState();
@@ -27,6 +26,7 @@ class _ProgramsListState extends State<ProgramsList> {
   final ScrollController _scrollController = new ScrollController();
 
   void _loadData() async {
+    print('in program load ${widget._programParams}');
     final response =
         await http.get(api: '${widget._api}?program=${widget._programParams}',token: token);
     List tempList = new List();
@@ -73,7 +73,6 @@ class _ProgramsListState extends State<ProgramsList> {
             logoUrl,
           ),
           RewardsList(
-            baseUrl: widget._baseUrl,
             api: api,
             programParams: widget._programParams,
             scrollController: _scrollController,

@@ -5,11 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../styles.dart';
 
 class LocationsTabTop extends StatelessWidget {
-  final String _baseUrl;
   final String _api;
   final String _programParams;
 
-  LocationsTabTop(this._baseUrl, this._api, this._programParams);
+  LocationsTabTop(this._api, this._programParams);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,6 @@ class LocationsTabTop extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => NearbyRewards(
-                      _baseUrl,
                       _api,
                       _programParams,
                     ),

@@ -10,11 +10,9 @@ import './location_map_bottom.dart';
 import '../../Http_provider.dart';
 
 class NearbyRewards extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
   final String _programParams;
   NearbyRewards(
-    this._baseUrl,
     this._api,
     this._programParams,
   );
@@ -62,7 +60,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
                   ),
                 ),
                 body: RewardsList(
-                  baseUrl: widget._baseUrl,
                   api: api,
                   programParams: widget._programParams,
                 ),
@@ -143,7 +140,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
             markers,
           ),
           LocationMapBottom(
-            widget._baseUrl,
             '/coordinates',
             widget._programParams,
             _isLocationAvailable,
