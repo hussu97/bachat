@@ -23,7 +23,9 @@ class HttpProvider {
 
   Future<dynamic> get({@required String api,CancelToken token}) async{
     if (token!=null){
-      return await dio.get(api,cancelToken: token);
+      return await dio.get(api,cancelToken: token).catchError((error) async{
+        await dio.get(api,cancelToken: token);
+      });
     } else {
       return await dio.get(api);
     }

@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,9 +15,9 @@ class LocationMapBottom extends StatefulWidget {
   final bool _isLocationAvailable;
   final Function _checkLocationPermission;
   final String _api;
-  final String _programParams;
+  
 
-  LocationMapBottom(this._api, this._programParams,
+  LocationMapBottom(this._api, 
       this._isLocationAvailable, this._checkLocationPermission);
 
   @override
@@ -88,7 +89,7 @@ class _LocationMapBottomState extends State<LocationMapBottom> {
   }
 
   void _loadData(lat, lon) {
-    moreDataUrl = '${widget._api}/$lat/$lon?program=${widget._programParams}';
+    moreDataUrl = '${widget._api}/$lat/$lon?program=${programParameters.p}';
     nearbyRewards.clear();
     _getMoreData();
   }

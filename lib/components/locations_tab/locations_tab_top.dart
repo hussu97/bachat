@@ -6,9 +6,8 @@ import '../../styles.dart';
 
 class LocationsTabTop extends StatelessWidget {
   final String _api;
-  final String _programParams;
 
-  LocationsTabTop(this._api, this._programParams);
+  LocationsTabTop(this._api);
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +47,7 @@ class LocationsTabTop extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NearbyRewards(
-                      _api,
-                      _programParams,
-                    ),
+                    builder: (context) => NearbyRewards(_api),
                   ),
                 );
               },

@@ -1,4 +1,5 @@
 import 'package:bachat/Http_provider.dart';
+import 'package:bachat/constants/program_params.dart';
 import 'package:bachat/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -8,12 +9,10 @@ import './components/reward_list_item/reward_list_item.dart';
 
 class RewardsList extends StatefulWidget {
   final String api;
-  String programParams;
   final ScrollController scrollController;
   final Function addRewardsCount;
   RewardsList({
     this.api,
-    this.programParams,
     this.addRewardsCount,
     this.scrollController,
   });
@@ -61,7 +60,7 @@ class _RewardsListState extends State<RewardsList> {
 
   @override
   void initState() {
-    moreDataUrl = '${widget.api}?program=${widget.programParams}';
+    moreDataUrl = '${widget.api}?program=${programParameters.p}';
     this._getMoreData();
     super.initState();
     if (widget.scrollController == null) {

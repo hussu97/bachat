@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
@@ -7,11 +8,9 @@ import '../Http_provider.dart';
 
 class RewardsProgramsSettings extends StatefulWidget {
   final Function _apiUpdateCallback;
-  final String _baseUrl;
   final String _programsApi;
 
   RewardsProgramsSettings(
-    this._baseUrl,
     this._programsApi,
     this._apiUpdateCallback,
   );
@@ -28,6 +27,7 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   final CancelToken token = new CancelToken();
 
   void _loadData() async {
+    print('heyoo');
     final response = await http.get(
       api: widget._programsApi,
       token: token,
@@ -40,6 +40,7 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
       tempList.add(rewardOrigin);
       tempList2.add(prefs.getBool(rewardOrigin) ?? true);
     });
+    print('size of tempList ${tempList.length}');
     setState(() {
       programs.addAll(tempList);
       isEnabled.addAll(tempList2);
@@ -48,15 +49,18 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   }
 
   _updateRewardProgramsList() {
-    String programParameter = '?program=';
+    String programParameter = '';
     for (int i = 0; i < programs.length; i++) {
       if (isEnabled[i]) {
         programParameter += '${programs[i]},';
       }
     }
-    programParameter =
-        programParameter.substring(0, programParameter.length - 1);
-    widget._apiUpdateCallback(programParameter);
+
+    setState(() {
+      programParameter =
+          programParameter.substring(0, programParameter.length - 1);
+      programParameters.p = programParameter;
+    });
   }
 
   @override

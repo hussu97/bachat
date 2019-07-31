@@ -7,12 +7,12 @@ import './components/locations_tab/locations_tab_top.dart';
 class LocationsTab extends StatefulWidget {
   final String _citiesApi;
   final String _locationsApi;
-  String _programParams;
+  
 
   LocationsTab(
     this._citiesApi,
     this._locationsApi,
-    this._programParams,
+    
   );
 
   @override
@@ -28,11 +28,9 @@ class _LocationsTabState extends State<LocationsTab> {
           children: <Widget>[
             LocationsTabTop(
               widget._locationsApi,
-              widget._programParams,
             ),
             LocationsList(
               widget._citiesApi,
-              widget._programParams,
             ),
           ],
         ),

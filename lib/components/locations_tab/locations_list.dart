@@ -1,4 +1,5 @@
 import 'package:bachat/components/icon_builder_color.dart';
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -10,9 +11,8 @@ import '../../Http_provider.dart';
 
 class LocationsList extends StatefulWidget {
   final String _api;
-  String _programParams;
 
-  LocationsList(this._api, this._programParams);
+  LocationsList(this._api);
 
   @override
   _LocationsListState createState() => _LocationsListState();
@@ -27,7 +27,7 @@ class _LocationsListState extends State<LocationsList> {
 
   void _loadData() async {
     final response = await http.get(
-      api: '${widget._api}?program=${widget._programParams}',
+      api: '${widget._api}?program=${programParameters.p}',
       token: token,
     );
     List tempList = new List();
@@ -98,10 +98,7 @@ class _LocationsListState extends State<LocationsList> {
                           style: Styles.textScreenTitle,
                         ),
                       ),
-                      body: RewardsList(
-                        api: api,
-                        programParams: widget._programParams,
-                      ),
+                      body: RewardsList(api: api),
                     ),
                   ),
                 );

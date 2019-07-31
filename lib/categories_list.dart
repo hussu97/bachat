@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -10,9 +11,9 @@ import './Http_provider.dart';
 
 class CategoriesList extends StatefulWidget {
   final String _api;
-  String _programParams;
+  
 
-  CategoriesList(this._api, this._programParams);
+  CategoriesList(this._api);
 
   @override
   _CategoriesListState createState() => _CategoriesListState();
@@ -27,7 +28,7 @@ class _CategoriesListState extends State<CategoriesList> {
 
   void _loadData() async {
     final response =
-        await http.get(api: '${widget._api}?program=${widget._programParams}', token: token);
+        await http.get(api: '${widget._api}?program=${programParameters.p}', token: token);
     List tempList = new List();
     response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
@@ -99,7 +100,6 @@ class _CategoriesListState extends State<CategoriesList> {
                       body: Container(
                         child: RewardsList(
                           api: api,
-                          programParams: widget._programParams,
                         ),
                         color: Styles.colorDefault,
                       ),

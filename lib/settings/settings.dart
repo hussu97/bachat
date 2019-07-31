@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
   final Function _apiUpdateCallback;
-  final String _baseUrl;
   final String _programsApi;
 
   Settings(
-    this._baseUrl,
     this._programsApi,
     this._apiUpdateCallback,
   );
@@ -19,6 +17,10 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final List<String> settingsOptions = ['Rewards Programs'];
+
+  void updateCallback(String programParams) {
+    widget._apiUpdateCallback(programParams);
+  }
 
   Widget _buildList() {
     return ListView(
@@ -51,9 +53,8 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   body: RewardsProgramsSettings(
-                    widget._baseUrl,
                     widget._programsApi,
-                    widget._apiUpdateCallback,
+                    updateCallback,
                   ),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
@@ -11,11 +12,7 @@ import '../../Http_provider.dart';
 
 class NearbyRewards extends StatefulWidget {
   final String _api;
-  final String _programParams;
-  NearbyRewards(
-    this._api,
-    this._programParams,
-  );
+  NearbyRewards(this._api);
 
   @override
   _NearbyRewardsState createState() => _NearbyRewardsState();
@@ -59,10 +56,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                body: RewardsList(
-                  api: api,
-                  programParams: widget._programParams,
-                ),
+                body: RewardsList(api: api),
               ),
             ),
           );
@@ -81,7 +75,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
       double lon1 = visibleRegion.southwest.longitude;
       final response = await http.get(
         api:
-            '${widget._api}?program=${widget._programParams}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker',
+            '${widget._api}?program=${programParameters.p}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker',
         token: token,
       );
       response.data['data'].forEach((el) => _addMarker(el, tempMarkers));
@@ -141,7 +135,6 @@ class _NearbyRewardsState extends State<NearbyRewards> {
           ),
           LocationMapBottom(
             '/coordinates',
-            widget._programParams,
             _isLocationAvailable,
             _checkLocationPermission,
           )
