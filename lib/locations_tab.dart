@@ -8,7 +8,7 @@ class LocationsTab extends StatefulWidget {
   final String _baseUrl;
   final String _citiesApi;
   final String _locationsApi;
-  final String _programParams;
+  String _programParams;
 
   LocationsTab(
     this._baseUrl,

@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateProgramParams(String programParam) {
     setState(() {
-      this.programParams = programParam;
+      programParams = programParam;
       this.initState();
     });
   }
@@ -86,8 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
     cachedSearches.clear();
-    cachedSearches.addAll(prefs.getStringList("search"));
-    programParams = programParams.substring(0, programParams.length - 1);
+    cachedSearches.addAll(prefs.getStringList("search") == null ? []:prefs.getStringList("search"));
+    setState(() {
+      programParams = programParams.substring(0, programParams.length - 1);
+    });
+    
   }
 
   Future _loadSearchData() async {
@@ -95,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     companyNames.clear();
     final response =
         await dio.get('$companyNamesEndpoint?program=$programParams');
+    print('data size is ${response.data['data'].length}');
     response.data['data'].forEach((el) => companyNames.add(el));
   }
 

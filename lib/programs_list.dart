@@ -11,7 +11,7 @@ import './components/program_info.dart';
 class ProgramsList extends StatefulWidget {
   final String _baseUrl;
   final String _api;
-  final String _programParams;
+  String _programParams;
 
   ProgramsList(this._baseUrl, this._api, this._programParams);
 

@@ -10,7 +10,7 @@ import './constants/icons.dart';
 class CategoriesList extends StatefulWidget {
   final String _baseUrl;
   final String _api;
-  final String _programParams;
+  String _programParams;
 
   CategoriesList(this._baseUrl, this._api, this._programParams);
 

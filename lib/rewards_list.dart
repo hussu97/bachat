@@ -8,7 +8,7 @@ import './components/reward_list_item/reward_list_item.dart';
 class RewardsList extends StatefulWidget {
   final String api;
   final String baseUrl;
-  final String programParams;
+  String programParams;
   final ScrollController scrollController;
   final Function addRewardsCount;
   RewardsList({
@@ -36,16 +36,22 @@ class _RewardsListState extends State<RewardsList> {
         isLoading = true;
       });
     }
-    final response = await dio.get(moreDataUrl);
-    List tempList = new List();
-    moreDataUrl = response.data['next'];
-    response.data['data'].forEach((el) => tempList.add(el));
-    setState(() {
-      isLoading = false;
-      rewards.addAll(tempList);
-      if (widget.addRewardsCount != null)
-        widget.addRewardsCount(response.data['count']);
+    final response = await dio.get(moreDataUrl).catchError((e) {
+      setState(() {
+        moreDataUrl = '';
+      });
     });
+    List tempList = new List();
+    try {
+      moreDataUrl = response.data['next'];
+      response.data['data'].forEach((el) => tempList.add(el));
+      setState(() {
+        isLoading = false;
+        rewards.addAll(tempList);
+        if (widget.addRewardsCount != null)
+          widget.addRewardsCount(response.data['count']);
+      });
+    } catch (e) {}
   }
 
   @override

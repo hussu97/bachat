@@ -5,7 +5,9 @@ class DataSearch extends SearchDelegate<String> {
   List<String> _list;
   List<String> _cachedList;
 
-  DataSearch(this._list, this._cachedList);
+  DataSearch(List<String> list, this._cachedList){
+    this._list = list.toSet().toList();
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
