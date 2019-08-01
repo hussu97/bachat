@@ -1,4 +1,5 @@
 import 'package:bachat/components/reward_origin_logo.dart';
+import 'package:bachat/constants/program_params.dart';
 import 'package:bachat/models/program.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -7,13 +8,13 @@ import './rewards_list.dart';
 import './styles.dart';
 import './components/loading_text.dart';
 import './components/program_info.dart';
+import './Http_provider.dart';
 
 class ProgramsList extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
-  String _programParams;
+  
 
-  ProgramsList(this._baseUrl, this._api, this._programParams);
+  ProgramsList(this._api);
 
   @override
   _ProgramsListState createState() => _ProgramsListState();
@@ -21,12 +22,14 @@ class ProgramsList extends StatefulWidget {
 
 class _ProgramsListState extends State<ProgramsList> {
   List programs = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
+  final CancelToken token = new CancelToken();
   final ScrollController _scrollController = new ScrollController();
 
   void _loadData() async {
+    print('in program load ${programParameters.p}');
     final response =
-        await dio.get('${widget._api}?program=${widget._programParams}');
+        await http.get(api: '${widget._api}?program=${programParameters.p}',token: token);
     List tempList = new List();
     response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
@@ -36,9 +39,15 @@ class _ProgramsListState extends State<ProgramsList> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if(_scrollController != null) _scrollController.dispose();
+    http.cancel(token);
+    super.dispose();
   }
 
   Widget _programListScaffold(
@@ -65,9 +74,7 @@ class _ProgramsListState extends State<ProgramsList> {
             logoUrl,
           ),
           RewardsList(
-            baseUrl: widget._baseUrl,
             api: api,
-            programParams: widget._programParams,
             scrollController: _scrollController,
           ),
           

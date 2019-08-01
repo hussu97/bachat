@@ -1,16 +1,16 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 import '../styles.dart';
+import '../Http_provider.dart';
 
 class RewardsProgramsSettings extends StatefulWidget {
   final Function _apiUpdateCallback;
-  final String _baseUrl;
   final String _programsApi;
 
   RewardsProgramsSettings(
-    this._baseUrl,
     this._programsApi,
     this._apiUpdateCallback,
   );
@@ -23,10 +23,15 @@ class RewardsProgramsSettings extends StatefulWidget {
 class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   List programs = new List();
   List isEnabled = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
+  final CancelToken token = new CancelToken();
 
   void _loadData() async {
-    final response = await dio.get(widget._programsApi);
+    print('heyoo');
+    final response = await http.get(
+      api: widget._programsApi,
+      token: token,
+    );
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> tempList = new List();
     List<bool> tempList2 = new List();
@@ -35,6 +40,7 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
       tempList.add(rewardOrigin);
       tempList2.add(prefs.getBool(rewardOrigin) ?? true);
     });
+    print('size of tempList ${tempList.length}');
     setState(() {
       programs.addAll(tempList);
       isEnabled.addAll(tempList2);
@@ -43,21 +49,30 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   }
 
   _updateRewardProgramsList() {
-    String programParameter = '?program=';
+    String programParameter = '';
     for (int i = 0; i < programs.length; i++) {
       if (isEnabled[i]) {
         programParameter += '${programs[i]},';
       }
     }
-    programParameter = programParameter.substring(0, programParameter.length - 1);
-    widget._apiUpdateCallback(programParameter);
+
+    setState(() {
+      programParameter =
+          programParameter.substring(0, programParameter.length - 1);
+      programParameters.p = programParameter;
+    });
   }
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    http.cancel(token);
+    super.dispose();
   }
 
   Widget _buildList() {

@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
@@ -7,23 +8,19 @@ import '../../styles.dart';
 import './location_map_gmaps.dart';
 import '../../rewards_list.dart';
 import './location_map_bottom.dart';
+import '../../Http_provider.dart';
 
 class NearbyRewards extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
-  final String _programParams;
-  NearbyRewards(
-    this._baseUrl,
-    this._api,
-    this._programParams,
-  );
+  NearbyRewards(this._api);
 
   @override
   _NearbyRewardsState createState() => _NearbyRewardsState();
 }
 
 class _NearbyRewardsState extends State<NearbyRewards> {
-  final Dio dio = new Dio();
+  HttpProvider http = HttpProvider.http;
+  CancelToken token = new CancelToken();
   Map<MarkerId, Marker> markers = {};
   Map<MarkerId, Marker> tempMarkers = {};
   Function loadLocationData;
@@ -59,11 +56,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                body: RewardsList(
-                  baseUrl: widget._baseUrl,
-                  api: api,
-                  programParams: widget._programParams,
-                ),
+                body: RewardsList(api: api),
               ),
             ),
           );
@@ -80,8 +73,11 @@ class _NearbyRewardsState extends State<NearbyRewards> {
       double lon2 = visibleRegion.northeast.longitude;
       double lat1 = visibleRegion.southwest.latitude;
       double lon1 = visibleRegion.southwest.longitude;
-      final response = await dio.get(
-          '${widget._api}?program=${widget._programParams}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker');
+      final response = await http.get(
+        api:
+            '${widget._api}?program=${programParameters.p}&coordinates=$lat1,$lon1,$lat2,$lon2&type=marker',
+        token: token,
+      );
       response.data['data'].forEach((el) => _addMarker(el, tempMarkers));
       return tempMarkers;
     }
@@ -106,10 +102,15 @@ class _NearbyRewardsState extends State<NearbyRewards> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     loadLocationData = _loadLocationData;
     _checkLocationPermission();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    http.cancel(token);
+    super.dispose();
   }
 
   @override
@@ -133,9 +134,7 @@ class _NearbyRewardsState extends State<NearbyRewards> {
             markers,
           ),
           LocationMapBottom(
-            widget._baseUrl,
             '/coordinates',
-            widget._programParams,
             _isLocationAvailable,
             _checkLocationPermission,
           )

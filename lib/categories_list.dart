@@ -1,3 +1,4 @@
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -6,13 +7,13 @@ import './styles.dart';
 import './components/loading_text.dart';
 import './components/icon_builder_color.dart';
 import './constants/icons.dart';
+import './Http_provider.dart';
 
 class CategoriesList extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
-  String _programParams;
+  
 
-  CategoriesList(this._baseUrl, this._api, this._programParams);
+  CategoriesList(this._api);
 
   @override
   _CategoriesListState createState() => _CategoriesListState();
@@ -20,13 +21,14 @@ class CategoriesList extends StatefulWidget {
 
 class _CategoriesListState extends State<CategoriesList> {
   List categories = new List();
-  final Dio dio = new Dio();
+  final HttpProvider http = HttpProvider.http;
   final Map<String, List<dynamic>> categoriesIconsConstants =
       IconConstants.categoryIcons;
+  final CancelToken token = new CancelToken();
 
   void _loadData() async {
     final response =
-        await dio.get('${widget._api}?program=${widget._programParams}');
+        await http.get(api: '${widget._api}?program=${programParameters.p}', token: token);
     List tempList = new List();
     response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
@@ -36,9 +38,14 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    http.cancel(token);
+    super.dispose();
   }
 
   Widget _buildList() {
@@ -92,9 +99,7 @@ class _CategoriesListState extends State<CategoriesList> {
                       ),
                       body: Container(
                         child: RewardsList(
-                          baseUrl: widget._baseUrl,
                           api: api,
-                          programParams: widget._programParams,
                         ),
                         color: Styles.colorDefault,
                       ),

@@ -1,4 +1,5 @@
 import 'package:bachat/components/icon_builder_color.dart';
+import 'package:bachat/constants/program_params.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
@@ -6,13 +7,12 @@ import '../../rewards_list.dart';
 import '../../styles.dart';
 import '../loading_text.dart';
 import '../../constants/icons.dart';
+import '../../Http_provider.dart';
 
 class LocationsList extends StatefulWidget {
-  final String _baseUrl;
   final String _api;
-  String _programParams;
 
-  LocationsList(this._baseUrl, this._api, this._programParams);
+  LocationsList(this._api);
 
   @override
   _LocationsListState createState() => _LocationsListState();
@@ -20,12 +20,16 @@ class LocationsList extends StatefulWidget {
 
 class _LocationsListState extends State<LocationsList> {
   List cities = new List();
-  final Dio dio = new Dio();
-  final Map<String, List<dynamic>> citiesIconsConstants = IconConstants.cityIcons;
+  HttpProvider http = HttpProvider.http;
+  CancelToken token = new CancelToken();
+  final Map<String, List<dynamic>> citiesIconsConstants =
+      IconConstants.cityIcons;
 
   void _loadData() async {
-    final response =
-        await dio.get('${widget._api}?program=${widget._programParams}');
+    final response = await http.get(
+      api: '${widget._api}?program=${programParameters.p}',
+      token: token,
+    );
     List tempList = new List();
     response.data['data'].forEach((el) => tempList.add(el));
     setState(() {
@@ -35,9 +39,14 @@ class _LocationsListState extends State<LocationsList> {
 
   @override
   void initState() {
-    dio.options.baseUrl = widget._baseUrl;
     this._loadData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    http.cancel(token);
+    super.dispose();
   }
 
   List<Widget> _buildList() {
@@ -49,13 +58,13 @@ class _LocationsListState extends State<LocationsList> {
       IconData icon;
       Color color;
       try {
-          List info = citiesIconsConstants[cityName];
-          icon = info[0];
-          color = info[1];
-        } catch (e) {
-          icon = Icons.location_city;
-          color = Styles.colorTertiary;
-        }
+        List info = citiesIconsConstants[cityName];
+        icon = info[0];
+        color = info[1];
+      } catch (e) {
+        icon = Icons.location_city;
+        color = Styles.colorTertiary;
+      }
       if (cityName != '') {
         widgets.add(
           new Card(
@@ -89,11 +98,7 @@ class _LocationsListState extends State<LocationsList> {
                           style: Styles.textScreenTitle,
                         ),
                       ),
-                      body: RewardsList(
-                        baseUrl: widget._baseUrl,
-                        api: api,
-                        programParams: widget._programParams,
-                      ),
+                      body: RewardsList(api: api),
                     ),
                   ),
                 );
