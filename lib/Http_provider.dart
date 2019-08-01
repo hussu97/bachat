@@ -9,7 +9,7 @@ class HttpProvider {
   Dio _dio;
 
   Dio get dio {
-    if(_dio != null) return _dio;
+    if (_dio != null) return _dio;
     _dio = new Dio();
     return _dio;
   }
@@ -21,10 +21,10 @@ class HttpProvider {
     d.options.baseUrl = baseUrl;
   }
 
-  Future<dynamic> get({@required String api,CancelToken token}) async{
-    if (token!=null){
-      return await dio.get(api,cancelToken: token).catchError((error) async{
-        await dio.get(api,cancelToken: token);
+  Future<dynamic> get({@required String api, CancelToken token}) async {
+    if (token != null) {
+      return await dio.get(api, cancelToken: token).catchError((error) async {
+        await dio.get(api, cancelToken: token);
       });
     } else {
       return await dio.get(api);

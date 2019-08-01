@@ -2,13 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<<<<<<< HEAD
-=======
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-9677526228593582~5387508186</string>
->>>>>>> 7a2e08cd09641939a103d9577231e366b559b95e
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -50,7 +47,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
 </dict>
 </plist>

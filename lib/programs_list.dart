@@ -27,7 +27,6 @@ class _ProgramsListState extends State<ProgramsList> {
   final ScrollController _scrollController = new ScrollController();
 
   void _loadData() async {
-    print('in program load ${programParameters.p}');
     final response =
         await http.get(api: '${widget._api}?program=${programParameters.p}',token: token);
     List tempList = new List();

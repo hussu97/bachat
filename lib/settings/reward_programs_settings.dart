@@ -27,7 +27,6 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
   final CancelToken token = new CancelToken();
 
   void _loadData() async {
-    print('heyoo');
     final response = await http.get(
       api: widget._programsApi,
       token: token,
@@ -40,7 +39,6 @@ class _RewardsProgramsSettingsState extends State<RewardsProgramsSettings> {
       tempList.add(rewardOrigin);
       tempList2.add(prefs.getBool(rewardOrigin) ?? true);
     });
-    print('size of tempList ${tempList.length}');
     setState(() {
       programs.addAll(tempList);
       isEnabled.addAll(tempList2);
