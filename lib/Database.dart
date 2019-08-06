@@ -7,7 +7,7 @@
 
 // import './models/reward.dart';
 // import './models/location.dart';
-// import './models/reward_and_location.dart';
+// // import './models/reward_and_location.dart';
 // import './models/program.dart';
 
 // class DBProvider {
@@ -79,8 +79,23 @@
 //     await deleteAllRewards();
 //     final db = await database;
 //     Batch batch = db.batch();
-//     rewards.forEach((reward) => batch.insert('rewards', Reward.fromJson(reward).toJson()));
-//     await batch.commit().catchError((onError)=>print(onError));
+//     await Future.forEach(rewards, (r) async => await db.insert('rewards', r));
+//     // for (var i = 0; i <= rewards.length ~/ 1000; i++) {
+//     //   for (var j = 0; j < 1000; j++) {
+//     //     try {
+//     //       batch.insert('rewards', rewards[i * 1000 + j]);
+//     //     } catch (e) {
+//     //       print(e);
+//     //       break;
+//     //     }
+//     //   }
+//     //   await batch
+//     //       .commit(noResult: true)
+//     //       .catchError((onError) => print(onError));
+//     // }
+//     // rewards.forEach((r) => batch.insert('rewards', r));
+//     // await batch.commit(noResult: true).catchError((onError) => print(onError));
+//     print('hey');
 //   }
 
 //   addAllLocations(List<dynamic> locations) async {
@@ -88,23 +103,18 @@
 //     final db = await database;
 //     Batch batch = db.batch();
 //     locations.forEach((location) => batch.insert('locations', location));
-//     await batch.commit(
-//       continueOnError: true,
-//       noResult: true,
-//     );
+//     await batch.commit(noResult: true).catchError((onError) => print(onError));
 //   }
 
-//   addAllRewardsAndLocations(
-//       List<dynamic> rewardsAndLocations) async {
+//   addAllRewardsAndLocations(List<dynamic> rewardsAndLocations) async {
 //     await deleteAllRewards();
 //     final db = await database;
 //     Batch batch = db.batch();
 //     rewardsAndLocations.forEach((rewardAndLocation) =>
 //         batch.insert('rewards_and_locations', rewardAndLocation));
-//     await batch.commit(
-//       continueOnError: true,
-//       noResult: true,
-//     );
+//     await batch
+//         .commit(noResult: true, continueOnError: true)
+//         .catchError((onError) => print(onError));
 //   }
 
 //   addAllRewardOrigins(List<dynamic> rewardOrigins) async {
@@ -113,22 +123,21 @@
 //     Batch batch = db.batch();
 //     rewardOrigins.forEach(
 //         (rewardOrigin) => batch.insert('reward_origins', rewardOrigin));
-//     await batch.commit(
-//       continueOnError: true,
-//       noResult: true,
-//     );
+//     await batch.commit(noResult: true).catchError((onError) => print(onError));
 //   }
 
 //   Future<List<Reward>> getRewards(List<String> rewardOrigins) async {
 //     final db = await database;
-//     List<Map<String, dynamic>> res = await db.rawQuery("SELECT * FROM rewards");
+//     List<Map<String, dynamic>> res = await db.query('rewards');
 //     List<Reward> res2 =
 //         res.isNotEmpty ? res.map((r) => Reward.fromJson(r)).toList() : [];
-//     res2.forEach((r) => r.locations = getLocations(r.id));
+//     Future.forEach(res2, (r) async {
+//       r.locations = await getLocations(r.id);
+//     });
 //     return res2;
 //   }
 
-//   getLocations(String rewardId) async {
+//   Future<List<Location>> getLocations(String rewardId) async {
 //     final db = await database;
 //     List<Map<String, dynamic>> res = await db.rawQuery(
 //         "SELECT * FROM locations,rewards_and_locations WHERE locations.id=rewards_and_locations.location_id AND reward_id=$rewardId");

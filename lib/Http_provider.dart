@@ -15,6 +15,10 @@ class HttpProvider {
   }
 
   String get programsEndpoint => '/programs';
+  String get rewardsEndpoint => '/rewards';
+  String get locationsEndpoint => '/locations';
+  String get rewardsAndLocationsEndpoint => '/rewardslocations';
+  String get rewardOriginsEndpoint => '/rewardorigins';
 
   initHttp(baseUrl) {
     final Dio d = dio;
@@ -27,7 +31,9 @@ class HttpProvider {
         await dio.get(api, cancelToken: token);
       });
     } else {
-      return await dio.get(api);
+      return await dio.get(api).catchError((error) async {
+        await dio.get(api, cancelToken: token);
+      });;
     }
   }
 
