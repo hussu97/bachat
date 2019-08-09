@@ -14,6 +14,7 @@ void main() {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
+      debugShowCheckedModeBanner: false,
       home: new SplashScreen(),
     ),
   );

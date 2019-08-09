@@ -128,7 +128,12 @@ class Reward {
         this.workingHours,
     });
 
-    factory Reward.fromJson(Map<String, dynamic> json) => new Reward(
+    factory Reward.fromJson(Map<String, dynamic> json) { 
+      List<Location> l = new List();
+      for (var item in json["locations"]) {
+        l.add(Location.fromJson(item));
+      }
+      return new Reward(
         backgroundImage: json["background_image"],
         companyName: json["company_name"],
         contact: json["contact"],
@@ -137,7 +142,7 @@ class Reward {
         expiryDate: json["expiry_date"],
         id: json["id"],
         link: json["link"],
-        locations: json["locations"] == null ? null : new List<Location>.from(json["locations"].map((x) => x)),
+        locations: l,
         logo: json["logo"],
         offer: json["offer"],
         offerDescription: json["offer_description"],
@@ -149,6 +154,7 @@ class Reward {
         website: json["website"],
         workingHours: json["working_hours"],
     );
+    }
 
     Map<String, dynamic> toJson() => {
         "background_image": backgroundImage,
