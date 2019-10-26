@@ -4,7 +4,7 @@
 
 ![Mockup](/screenshots/main.jpg)
 **Freelance Project**
-**Project Duration - July 2019 - Present**
+**Project Duration - July 2019 - Sept 2019**
 ***
 Bachat is an Android and iOS mobile application, that allows users to view offers available from different rewards programs, all in a single application. Gone are the days where users have to install one application for each bank/restaurant/mobile carrier rewards program.
 
