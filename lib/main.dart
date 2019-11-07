@@ -28,9 +28,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String programParams = '';
   List<String> cachedSearches = new List();
-
   static String base =
-      'http://development.2shkuzu3ua.us-east-1.elasticbeanstalk.com';
+      'http://production.2shkuzu3ua.us-east-1.elasticbeanstalk.com';
   // static String base = 'http://192.168.0.185:5000';
   static String latestApiUrl = '/api/v1';
   final String baseUrl = '$base$latestApiUrl';
